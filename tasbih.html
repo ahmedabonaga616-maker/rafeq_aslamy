@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>السبحة الإلكترونية | الموقع الإسلامي الشامل</title>
+<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="tasbih.css?v=5">
+</head>
+<body data-theme="dark">
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-emblem">☾</div>
+      <div><div class="brand-name">السبحة الإلكترونية</div></div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+      <span class="knob"><i id="themeIcon">🌙</i></span>
+    </button>
+  </div>
+</header>
+
+<div class="big-back-wrap">
+  <a href="/" class="big-back-btn">🏠 العودة للرئيسية</a>
+</div>
+
+<main class="container tasbih-wrap">
+  <div class="mode-switcher">
+    <button class="mode-btn active" id="modernModeBtn">📿 سبحة حديثة</button>
+    <button class="mode-btn" id="handModeBtn">🖐️ سبحة يد</button>
+  </div>
+
+  <div class="dhikr-selector">
+    <label for="dhikrSelect">اختر الذكر:</label>
+    <select id="dhikrSelect">
+      <option value="سُبْحَانَ اللَّهِ">سبحان الله</option>
+      <option value="الْحَمْدُ لِلَّهِ">الحمد لله</option>
+      <option value="اللَّهُ أَكْبَرُ">الله أكبر</option>
+      <option value="لَا إِلَٰهَ إِلَّا اللَّهُ">لا إله إلا الله</option>
+      <option value="أَسْتَغْفِرُ اللَّهَ">أستغفر الله</option>
+      <option value="لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ">لا حول ولا قوة إلا بالله</option>
+      <option value="اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ">اللهم صلِّ على محمد</option>
+      <option value="سُبْحَانَ اللَّهِ وَبِحَمْدِهِ">سبحان الله وبحمده</option>
+    </select>
+  </div>
+
+  <section class="tasbih-view" id="modernView">
+    <div class="dhikr-display" id="dhikrDisplayModern">سُبْحَانَ اللَّهِ</div>
+    <div class="circular-counter" id="circularCounter">
+      <svg viewBox="0 0 220 220" class="progress-ring">
+        <circle cx="110" cy="110" r="95" class="ring-bg"></circle>
+        <circle cx="110" cy="110" r="95" class="ring-fg" id="ringFg"></circle>
+      </svg>
+      <div class="counter-center">
+        <span class="count-num" id="countNum">0</span>
+        <span class="count-total">/ 33</span>
+      </div>
+    </div>
+    <div class="tasbih-controls">
+      <button class="btn small" id="resetBtn">↺ تصفير</button>
+      <span class="total-badge">الإجمالي: <b id="totalCount">0</b></span>
+    </div>
+    <p class="calm-msg" id="calmMsg"></p>
+  </section>
+
+  <section class="tasbih-view hidden" id="handView">
+    <div class="dhikr-display" id="dhikrDisplayHand">سُبْحَانَ اللَّهِ</div>
+
+    <div class="hand-device-wrap">
+      <div class="hand-device" id="handDevice">
+        <div class="lcd-screen">
+          <div class="lcd-number" id="handCountNum">0</div>
+          <div class="lcd-labels"><span>COUNT</span><span>RESET</span></div>
+        </div>
+        <div class="device-button" id="handButton"></div>
+      </div>
+    </div>
+
+    <div class="tasbih-controls">
+      <span class="total-badge">/ 33</span>
+      <button class="btn small" id="resetHandBtn">↺ تصفير</button>
+    </div>
+    <p class="calm-msg" id="calmMsgHand"></p>
+
+    <div class="designs-title">🎨 اختر شكل السبحة (20 تصميم)</div>
+    <div class="designs-grid" id="designsGrid"></div>
+  </section>
+</main>
+
+<div class="toast" id="toastBox"></div>
+<audio id="audioClick" src="audio/click.mp3" preload="auto"></audio>
+
+<script src="tasbih.js?v=5"></script>
+</body>
+</html>

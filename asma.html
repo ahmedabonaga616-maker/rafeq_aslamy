@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أسماء الله الحسنى | الموقع الإسلامي الشامل</title>
+<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="asma.css?v=5">
+</head>
+<body data-theme="dark">
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-emblem">☾</div>
+      <div><div class="brand-name">أسماء الله الحسنى</div></div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+      <span class="knob"><i id="themeIcon">🌙</i></span>
+    </button>
+  </div>
+</header>
+
+<div class="big-back-wrap">
+  <a href="/" class="big-back-btn">🏠 العودة للرئيسية</a>
+</div>
+
+<main class="container asma-wrap">
+  <p style="color:var(--text-dim); font-size:.85rem; margin-bottom:18px; text-align:center;">اضغط على أي اسم لعرض معناه والاستماع إليه</p>
+  <div class="asma-grid" id="asmaGrid"></div>
+</main>
+
+<div class="asma-modal" id="asmaModal">
+  <div class="asma-modal-content">
+    <h2 id="modalName">--</h2>
+    <p id="modalMeaning">--</p>
+    <button class="btn small" id="modalPlayBtn">🔊 استماع</button>
+    <button class="btn primary" id="modalCloseBtn" style="margin-right:8px;">إغلاق</button>
+  </div>
+</div>
+
+<audio id="audioAllah" src="audio/Allah.mp3" preload="auto"></audio>
+<audio id="audioClick" src="audio/click.mp3" preload="auto"></audio>
+<script src="asma-data.js?v=5"></script>
+<script src="asma.js?v=5"></script>
+</body>
+</html>

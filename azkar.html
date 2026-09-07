@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الأذكار | الموقع الإسلامي الشامل</title>
+<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="azkar.css?v=5">
+</head>
+<body data-theme="dark">
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-emblem">☾</div>
+      <div><div class="brand-name">الأذكار</div></div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+      <span class="knob"><i id="themeIcon">🌙</i></span>
+    </button>
+  </div>
+</header>
+
+<div class="big-back-wrap">
+  <a href="/" class="big-back-btn">🏠 العودة للرئيسية</a>
+</div>
+<!-- زرار فتح المفكرة -->
+<div style="text-align: center; margin-bottom: 15px;">
+  <button id="toggleDuaBtn" class="main-btn" style="background-color: #f1c40f; color: #000; border-radius: 20px; padding: 10px 20px; border: none; font-weight: bold; cursor: pointer;">
+      📝 مفكرة أدعيتي
+  </button>
+</div>
+
+<!-- صندوق المفكرة (مخفي في البداية زي الفيديو) -->
+<div id="duaSection" class="dua-container" style="display: none;">
+  <input type="text" id="duaInput" placeholder="اكتب دعاءك هنا واحفظه...">
+  <br>
+  <button id="addDuaBtn" class="save-btn">💾 حفظ الدعاء</button>
+  
+  <!-- المكان اللي هتظهر فيه الأدعية المحفوظة -->
+  <div id="duaList" style="margin-top: 15px;"></div>
+</div>
+<main class="container azkar-wrap">
+ <!-- شريط البحث -->
+<div class="search-box">
+  <input type="text" id="adhkarSearchInput" onkeyup="filterAdhkar()" placeholder="🔍 ابحث عن ذكر...">
+</div>
+
+<!-- قائمة الأقسام العمودية -->
+<div id="categoriesList" class="categories-vertical-list"></div>
+<!-- شاشة عرض الذكر الفردية -->
+<!-- شاشة عرض الذكر (الضغط في أي مكان في الشاشة يقلل العداد) -->
+<div id="dhkarDetailView" onclick="handleDhikrTouch()" style="display:none; min-height:80vh; padding:10px; cursor:pointer; user-select:none;">
+    
+  <!-- الشريط العلوي -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+      <button onclick="closeAdhkarCategory(); event.stopPropagation();" style="background:none; border:none; color:var(--gold, #c99a2e); font-weight:bold; cursor:pointer; font-size:1rem;">➔ العودة للقائمة</button>
+      <h3 id="categoryTitleName" style="margin:0; color:var(--text, #fff);">--</h3>
+  </div>
+
+  <!-- كارت الذكر -->
+  <div class="azkar-card" style="padding:25px 20px;">
+      <!-- مؤشر الذكر -->
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="background:var(--gold, #c99a2e); color:#fff; width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:bold;">i</span>
+          <span id="dhkarProgressIndicator" style="color:var(--gold, #c99a2e); font-weight:bold;">الذكر 1 من 1</span>
+      </div>
+
+      <!-- شريط التقدم -->
+      <div style="width:100%; height:4px; background:var(--border, #334155); border-radius:2px; margin:15px 0 20px 0;">
+          <div id="dhkarBarFill" style="height:100%; width:0%; background:var(--gold, #c99a2e); border-radius:2px; transition:width 0.3s;"></div>
+      </div>
+
+      <!-- نص الذكر -->
+      <div style="min-height:140px; display:flex; align-items:center; justify-content:center; text-align:center;">
+          <p id="currentDhikrText" class="azkar-text" style="font-size:1.4rem; line-height:2; margin:0;">--</p>
+      </div>
+
+      <!-- الأزرار السفلية -->
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; padding-top:15px; border-top:1px solid var(--border, #334155);">
+          <button onclick="prevDhikrStep(); event.stopPropagation();" style="background:transparent; border:1px solid var(--border, #334155); color:var(--text, #fff); padding:8px 16px; border-radius:8px; cursor:pointer; font-weight:bold;">↩️ رجوع</button>
+          <span id="dhkarRemainingCount" style="color:var(--text-dim, #94a3b8); font-size:0.95rem;">1 تكرار</span>
+          <button id="dhkarTouchBtn" onclick="handleDhikrTouch(); event.stopPropagation();" style="background:var(--gold, #c99a2e); color:#fff; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; cursor:pointer;">متابعة ➔</button>
+      </div>
+  </div>
+</div>
+  </div>
+</div>
+</main>
+
+<div class="toast" id="toastBox"></div>
+<audio id="audioClick" src="audio/click.mp3" preload="auto"></audio>
+
+<script src="azkar-data.js?v=5"></script>
+<script src="azkar.js?v=5"></script>
+</body>
+</html>

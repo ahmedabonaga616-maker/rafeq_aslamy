@@ -1,0 +1,21 @@
+.asma-wrap{ padding: 30px 20px 60px; }
+.asma-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap:14px; }
+.asma-card{
+  background: var(--surface); border:1px solid var(--border); border-radius: var(--radius);
+  padding: 20px 10px; text-align:center; cursor:pointer; transition: all .3s ease;
+}
+.asma-card:hover{ transform: translateY(-4px); border-color: var(--gold); box-shadow: var(--shadow); }
+.asma-card .num{ font-size:.7rem; color: var(--text-dim); }
+.asma-card .name{ font-family: var(--font-display); font-size:1.25rem; color: var(--gold-bright); margin: 6px 0; }
+
+.asma-modal{
+  position: fixed; inset:0; background: rgba(0,0,0,.6); display:none;
+  align-items:center; justify-content:center; z-index: 300; padding:20px;
+}
+.asma-modal.show{ display:flex; }
+.asma-modal-content{
+  background: var(--surface); border:1px solid var(--gold); border-radius: var(--radius);
+  padding: 30px; max-width: 420px; width:100%; text-align:center; box-shadow: var(--shadow);
+}
+.asma-modal-content h2{ font-family: var(--font-display); color: var(--gold-bright); font-size:1.8rem; margin-bottom:14px; }
+.asma-modal-content p{ color: var(--text-dim); line-height:1.8; margin-bottom:18px; }

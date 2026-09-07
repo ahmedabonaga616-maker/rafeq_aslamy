@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شكاوى واقتراحات | الموقع الإسلامي الشامل</title>
+<link rel="stylesheet" href="style.css?v=5">
+<style>
+.contact-wrap{ padding: 20px 16px 60px; max-width: 560px; }
+.contact-form{ background: var(--surface); border:1px solid var(--border); border-radius: var(--radius); padding: 26px; box-shadow: var(--shadow); }
+.contact-form label{ display:block; margin-bottom:6px; font-size:.85rem; color: var(--gold-bright); font-weight:700; }
+.contact-form input, .contact-form select, .contact-form textarea{
+  width:100%; padding:11px 14px; border-radius:12px; border:1px solid var(--border);
+  background: var(--surface-2); color: var(--text); font-family:inherit; margin-bottom:16px;
+}
+.contact-form textarea{ resize:vertical; }
+</style>
+</head>
+<body data-theme="dark">
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-emblem">☾</div>
+      <div><div class="brand-name">شكاوى واقتراحات</div></div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+      <span class="knob"><i id="themeIcon">🌙</i></span>
+    </button>
+  </div>
+</header>
+
+<div class="big-back-wrap">
+  <a href="/" class="big-back-btn">🏠 العودة للرئيسية</a>
+</div>
+
+<main class="container contact-wrap">
+  <p style="color:var(--text-dim); font-size:.85rem; margin-bottom:18px; text-align:center;">رأيك يهمنا، أي ملاحظة أو اقتراح هيوصلنا مباشرة</p>
+
+  <form class="contact-form" id="contactForm" action="https://formsubmit.co/ahmedabonaga616@gmail.com" method="POST">
+    <input type="hidden" name="_subject" value="رسالة جديدة من الموقع الإسلامي الشامل">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_template" value="table">
+
+    <label for="nameInput">الاسم</label>
+    <input type="text" id="nameInput" name="الاسم" required placeholder="اكتب اسمك">
+
+    <label for="typeInput">نوع الرسالة</label>
+    <select id="typeInput" name="النوع">
+      <option value="اقتراح">اقتراح</option>
+      <option value="شكوى">شكوى</option>
+      <option value="مشكلة تقنية">مشكلة تقنية</option>
+      <option value="تحية">تحية 🤍</option>
+    </select>
+
+    <label for="messageInput">رسالتك</label>
+    <textarea id="messageInput" name="الرسالة" rows="5" required placeholder="اكتب رسالتك هنا..."></textarea>
+
+    <button type="submit" class="btn primary" style="width:100%; justify-content:center;">📤 إرسال</button>
+  </form>
+</main>
+
+<div class="toast" id="toastBox"></div>
+<audio id="audioClick" src="audio/click.mp3" preload="auto"></audio>
+
+<script src="contact.js?v=5"></script>
+</body>
+</html>

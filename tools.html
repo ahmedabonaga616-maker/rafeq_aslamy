@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الأدوات | الموقع الإسلامي الشامل</title>
+  <link rel="stylesheet" href="style.css?v=5">
+  <link rel="stylesheet" href="tools.css?v=5">
+</head>
+<body data-theme="dark">
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-emblem">☪</div>
+        <div><div class="brand-name">الأدوات</div></div>
+      </div>
+      <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+        <span class="knob"><i id="themeIcon">🌙</i></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="big-back-wrap">
+    <a href="/" class="big-back-btn">🏠 العودة للرئيسية</a>
+  </div>
+
+  <!-- حاوية الشبكة المجمعة للأدوات -->
+  <main class="tools-container">
+
+    <!-- 1. أداة محول التاريخ الهجري والميلادي -->
+    <section class="hijri-section">
+      <div class="section-header">
+        <span class="header-icon">📅</span>
+        <h2>محول التاريخ الهجري والميلادي</h2>
+      </div>
+
+      <div class="hijri-card">
+        <div class="today-banner">
+          <div class="today-tag">تاريخ اليوم الحقيقي</div>
+          <div id="todayHijri" class="today-hijri-text">جاري التحميل...</div>
+          <div id="todayGreg" class="today-greg-text">جاري التحميل...</div>
+        </div>
+
+        <div class="converter-tabs">
+          <button id="tabG2H" class="tab-btn active">
+            <span>🗓️</span> ميلادي إلى هجري
+          </button>
+          <button id="tabH2G" class="tab-btn">
+            <span>🌙</span> هجري إلى ميلادي
+          </button>
+        </div>
+
+        <!-- تحويل من ميلادي لـ هجري -->
+        <div id="g2hSection" class="converter-content">
+          <label class="input-label">اختر التاريخ الميلادي:</label>
+          <input type="date" id="gregInput" class="custom-input">
+          <button id="convertG2HBtn" class="btn-primary">تحويل للهجري ✨</button>
+          <div id="g2hResult" class="result-card" style="display:none;"></div>
+        </div>
+
+        <!-- تحويل من هجري لـ ميلادي -->
+        <div id="h2gSection" class="converter-content" style="display:none;">
+          <label class="input-label">أدخل التاريخ الهجري:</label>
+          <div class="hijri-grid">
+            <input type="number" id="hDay" placeholder="اليوم" min="1" max="30" class="custom-input">
+            <select id="hMonth" class="custom-input select-input">
+              <option value="1">1 - محرّم</option>
+              <option value="2">2 - صفر</option>
+              <option value="3">3 - ربيع الأول</option>
+              <option value="4">4 - ربيع الآخر</option>
+              <option value="5">5 - جمادى الأولى</option>
+              <option value="6">6 - جمادى الآخرة</option>
+              <option value="7">7 - رجب</option>
+              <option value="8">8 - شعبان</option>
+              <option value="9">9 - رمضان</option>
+              <option value="10">10 - شوال</option>
+              <option value="11">11 - ذو القعدة</option>
+              <option value="12">12 - ذو الحجة</option>
+            </select>
+            <input type="number" id="hYear" placeholder="السنة (1448)" class="custom-input">
+          </div>
+          <button id="convertH2GBtn" class="btn-primary">تحويل للميلادي ✨</button>
+          <div id="h2gResult" class="result-card" style="display:none;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. أداة أقرب مسجد ومصلى -->
+    <section class="mosque-section">
+      <div class="section-header">
+        <span class="header-icon">📍</span>
+        <h2>أقرب مسجد ومصلى</h2>
+      </div>
+
+      <div class="hijri-card">
+        <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 15px; text-align: center; line-height: 1.6;">
+          حدد موقعك الحالي للوصول فوراً إلى أقرب المساجد والمصلّيات المحيطة بك عبر الخريطة.
+        </p>
+        <button id="findMosqueBtn" class="btn-primary">
+          البحث عن أقرب مسجد 🎯
+        </button>
+        <div id="mosqueStatus" class="result-card" style="display:none; margin-top: 15px;"></div>
+        <!-- ز وضع عدم الإزعاج مع نص شارح لملء المساحة -->
+<div class="dnd-wrapper" style="margin-top: 15px; padding-top: 12px; border-top: 1px solid var(--border);">
+  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+    <span style="font-size: 13px; font-weight: bold; color: var(--text);">🔇 وضع عدم الإزعاج</span>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span id="dndStatusText" class="dnd-status-text status-off">غير مفعل</span>
+      <label class="dnd-switch">
+        <input type="checkbox" id="dndToggle">
+        <span class="dnd-slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- النص الشارح للتوضيح وملء المساحة -->
+  <p style="color: var(--text-dim); font-size: 11px; line-height: 1.6; margin: 0; text-align: justify;">
+    💡 <b>ماذا يفعل هذا الخيار؟</b> عند تفعيله يتم كتم جميع الأصوات والتنبيهات التلقائية في الموقع فوراً، مثل:
+  </p>
+  <ul style="color: var(--text-dim); font-size: 11px; line-height: 1.5; margin: 6px 0 0 0; padding-right: 18px;">
+    <li>التذكير الصوتي الدوري "صلّ على محمد".</li>
+    <li>تنبيهات أوقات الصلوات وصلاة الضحى.</li>
+    <li>أي تلاوات أو مشغلات صوتية تعمل تلقائياً.</li>
+  </ul>
+</div>
+
+  </div>
+</div>
+      </div>
+
+    </section>
+    <section class="tool-card">
+      <div class="section-header">
+        <span class="header-icon">🌙</span>
+        <h2>بوابة المواسم والنفحات</h2>
+        <button class="help-btn" onclick="toggleHelp('help-ramadan')">؟</button>
+      </div>
+    
+      <div id="help-ramadan" class="help-box" style="display: none;">
+        💡 <b>بوابة المواسم:</b> تابع أهم المناسبات الإسلامية القادمة، وراقب العد التنازلي الدقيق (بالأيام والساعات) لحلول شهر رمضان المبارك.
+      </div>
+    
+      <div class="hijri-card dual-widget-box">
+        <!-- الأداة الأولى: تقويم المناسبات -->
+        <div class="widget-half">
+          <h3 class="widget-title">📌 أهم المناسبات السنوية</h3>
+          <ul class="mini-list" style="margin-top: 10px;">
+            <li><span>بداية شهر رجب</span> <span class="badge">1 رجب</span></li>
+            <li><span>ليلة النصف من شعبان</span> <span class="badge">15 شعبان</span></li>
+            <li><span>شهر رمضان المبارك</span> <span class="badge">1 رمضان</span></li>
+            <li><span>عيد الفطر المبارك</span> <span class="badge">1 شوال</span></li>
+            <li><span>يوم عرفة</span> <span class="badge">9 ذو الحجة</span></li>
+            <li><span>عيد الأضحى المبارك</span> <span class="badge">10 ذو الحجة</span></li>
+          </ul>
+        </div>
+    
+        <div class="vertical-divider"></div>
+    
+        <!-- الأداة الثانية: العد التنازلي لرمضان -->
+        <div class="widget-half">
+          <h3 class="widget-title">⏳ كم باقٍ على رمضان؟</h3>
+          <p style="font-size: 11px; color: var(--text-dim); text-align: center; margin-bottom: 10px;">
+            اللهم بلغنا رمضان لا فاقدين ولا مفقودين
+          </p>
+          
+          <!-- شكل العداد -->
+          <div class="countdown-container" id="ramadanCountdown">
+            <div class="time-box">
+              <span id="ramadanDays" class="time-number">--</span>
+              <span class="time-text">يوم</span>
+            </div>
+            <div class="time-box">
+              <span id="ramadanHours" class="time-number">--</span>
+              <span class="time-text">ساعة</span>
+            </div>
+            <div class="time-box">
+              <span id="ramadanMinutes" class="time-number">--</span>
+              <span class="time-text">دقيقة</span>
+            </div>
+            <div class="time-box">
+              <span id="ramadanSeconds" class="time-number">--</span>
+              <span class="time-text">ثانية</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+   <!-- التقويم الهجري -->
+<section class="container" style="margin-top:26px;">
+  <div class="hijri-cal-wrap">
+    <div class="hijri-cal-ornament-top">✦ ✦ ✦</div>
+    <div class="hijri-cal-title-main">📅 التقويم الهجري</div>
+
+    <div class="hijri-cal-header">
+      <button class="hijri-nav-btn" id="hijriPrevBtn">‹</button>
+      <div class="hijri-cal-title" id="hijriCalTitle">--</div>
+      <button class="hijri-nav-btn" id="hijriNextBtn">›</button>
+    </div>
+
+    <div class="hijri-cal-weekdays">
+      <span>أحد</span><span>اثنين</span><span>ثلاثاء</span><span>أربعاء</span><span>خميس</span><span>جمعة</span><span>سبت</span>
+    </div>
+    <div class="hijri-cal-grid" id="hijriCalGrid"></div>
+
+    <div class="hijri-cal-ornament-bottom">✦ ✦ ✦</div>
+  </div>
+</section>
+<!-- كارت مسار العادات والورد القرآني -->
+<section class="tool-card">
+  <div class="section-header">
+    <span class="header-icon">📖</span>
+    <h2>مسار العادات والورد القرآني</h2>
+    <button class="help-btn" onclick="toggleHelp('help-habits-quran')">؟</button>
+  </div>
+
+  <div id="help-habits-quran" class="help-box" style="display: none;">
+    💡 <b>كيفية الاستخدام:</b> تتبع عاداتك اليومية من الجانب الأيمن، واستخدم الحاسبة في الجانب الأيسر لمعرفة عدد الصفحات المطلوبة لختم القرآن في المدة التي تختارها.
+  </div>
+
+  <div class="hijri-card dual-widget-box">
+    <!-- الأداة الأولى: مفكرة العادات -->
+    <div class="widget-half">
+      <h3 class="widget-title">✅ مفكرة العادات اليومية</h3>
+      <div class="habit-tracker-list">
+        <label class="habit-item"><input type="checkbox"> <span>أذكار الصباح</span></label>
+        <label class="habit-item"><input type="checkbox"> <span>أذكار المساء</span></label>
+        <label class="habit-item"><input type="checkbox"> <span>صلاة الضحى</span></label>
+        <label class="habit-item"><input type="checkbox"> <span>قيام الليل والوتر</span></label>
+        <label class="habit-item"><input type="checkbox"> <span>ورد الاستغفار</span></label>
+      </div>
+    </div>
+
+    <div class="vertical-divider"></div>
+
+    <!-- الأداة الثانية: مخطط الورد القرآني -->
+    <div class="widget-half">
+      <h3 class="widget-title">📿 حاسبة ختم القرآن</h3>
+      <label class="input-label" style="font-size: 11px;">كم يوماً تريد لختم القرآن؟</label>
+      
+      <div style="display: flex; gap: 8px; margin-top: 8px;">
+        <input type="number" id="quranDaysInput" class="custom-input" placeholder="مثال: 30" value="30" min="1" max="365" style="width: 70px; text-align: center;">
+        <button id="calcQuranBtn" class="btn-primary" style="flex: 1; padding: 6px; font-size: 12px;">احسب الورد 🧮</button>
+      </div>
+
+      <!-- صندوق عرض النتيجة -->
+      <div id="quranResultBox" class="quran-result-box" style="display: none;">
+        <div class="quran-total">
+          المطلوب يومياً: <b id="dailyPagesVal">--</b> صفحة
+        </div>
+        <div class="quran-prayer">
+          بعد كل صلاة: <b id="prayerPagesVal">--</b> صفحات تقريباً
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 8. مفكرة العادات اليومية (يدوية بالكامل) -->
+    <section class="habits-section">
+      <div class="section-header">
+        <span class="header-icon">✅</span>
+        <h2>مفكرة عاداتي اليومية</h2>
+      </div>
+      <div class="hijri-card">
+        <div id="habitsList" class="habits-list"></div>
+        <div class="habit-add-row">
+          <input type="text" id="newHabitInput" class="custom-input" placeholder="أضف مهمة جديدة...">
+          <button class="btn-primary" id="addHabitBtn" style="width:auto; padding:10px 16px;">+</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="tools.js"></script>
+</body>
+</html>

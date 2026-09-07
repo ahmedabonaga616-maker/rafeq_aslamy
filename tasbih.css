@@ -1,0 +1,107 @@
+/* ===================== صفحة السبحة ===================== */
+.tasbih-wrap{ padding: 30px 20px 60px; max-width: 640px; text-align:center; }
+
+/* -------- تبديل الوضع -------- */
+.mode-switcher{
+  display:flex; gap:10px; justify-content:center; margin-bottom: 22px;
+  background: var(--surface); border:1px solid var(--border); border-radius: 30px; padding:6px;
+}
+.mode-btn{
+  flex:1; padding:10px 14px; border-radius: 24px; font-weight:700; font-size:.9rem;
+  color: var(--text-dim); transition: all .3s ease;
+}
+.mode-btn.active{ background: linear-gradient(135deg, var(--gold), var(--gold-bright)); color:#171203; }
+
+/* -------- اختيار الذكر -------- */
+.dhikr-selector{ margin-bottom: 26px; display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap; }
+.dhikr-selector label{ font-size:.85rem; color: var(--text-dim); }
+.dhikr-selector select{
+  padding: 10px 16px; border-radius: 30px; border:1px solid var(--border);
+  background: var(--surface-2); color: var(--text); font-family: var(--font-body); font-size: .9rem;
+}
+
+.tasbih-view.hidden{ display:none; }
+
+.dhikr-display{
+  font-family: var(--font-display); font-size: 1.6rem; color: var(--gold-bright);
+  margin-bottom: 26px; min-height: 50px;
+}
+
+/* -------- الوضع الدائري -------- */
+.circular-counter{
+  position: relative; width: 240px; height: 240px; margin: 0 auto 20px;
+  cursor: pointer; user-select:none; -webkit-tap-highlight-color: transparent;
+}
+.progress-ring{ width:100%; height:100%; transform: rotate(-90deg); }
+.ring-bg{ fill:none; stroke: var(--surface-2); stroke-width: 12; }
+.ring-fg{
+  fill:none; stroke: url(#none); stroke: var(--gold); stroke-width: 12; stroke-linecap: round;
+  stroke-dasharray: 597; stroke-dashoffset: 597;
+  transition: stroke-dashoffset .35s ease, stroke .3s ease;
+}
+.counter-center{
+  position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+.count-num{ font-family: var(--font-display); font-size: 3.2rem; color: var(--text); font-weight:700; line-height:1; }
+.count-total{ color: var(--text-dim); font-size:.9rem; margin-top:4px; }
+
+.circular-counter.tapped{ animation: tapPulse .18s ease; }
+@keyframes tapPulse{ 0%{ transform: scale(1); } 50%{ transform: scale(.96); } 100%{ transform: scale(1); } }
+
+.circular-counter.cooldown .ring-fg{ stroke: var(--danger); }
+.circular-counter.cooldown{ opacity:.7; }
+
+.tasbih-controls{ display:flex; align-items:center; justify-content:center; gap:16px; margin-top: 10px; flex-wrap:wrap; }
+.total-badge{ font-size:.85rem; color: var(--text-dim); }
+.total-badge b{ color: var(--gold-bright); }
+
+.calm-msg{
+  min-height: 26px; color: var(--danger); font-weight:700; margin-top: 14px; font-size:.9rem;
+  opacity:0; transition: opacity .3s ease;
+}
+.calm-msg.show{ opacity:1; }
+
+/* -------- وضع سبحة اليد: جهاز عداد رقمي (زي الصورة) -------- */
+.hand-device-wrap{ display:flex; justify-content:center; margin-bottom: 10px; }
+.hand-device{
+  width: 220px; padding: 20px 18px 26px; border-radius: 50% 50% 22px 22px / 60% 60% 18px 18px;
+  background: var(--device-skin, linear-gradient(160deg, #e8e8e8, #bfbfbf));
+  box-shadow: var(--shadow), inset 0 2px 6px rgba(255,255,255,.4), inset 0 -6px 10px rgba(0,0,0,.15);
+  cursor: pointer; user-select:none; -webkit-tap-highlight-color: transparent;
+  display:flex; flex-direction:column; align-items:center; gap:16px;
+  transition: transform .15s ease;
+}
+.hand-device.tapped{ transform: scale(.97); }
+.hand-device.cooldown{ opacity:.7; }
+
+.lcd-screen{
+  width: 100%; background: #cbd6c4; border: 3px solid #2b2b2b; border-radius: 8px;
+  padding: 10px 10px 6px; box-shadow: inset 0 3px 8px rgba(0,0,0,.35);
+}
+.lcd-number{
+  font-family: 'Courier New', monospace; font-weight:900; font-size: 2.6rem; color:#1c1c1c;
+  text-align:center; letter-spacing: 2px; line-height:1;
+}
+.lcd-labels{ display:flex; justify-content:space-between; font-size:.6rem; color:#2b2b2b; font-weight:700; margin-top:4px; }
+
+.device-button{
+  width: 64px; height: 64px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffffff, #d8d8d8 70%, #b0b0b0);
+  box-shadow: 0 4px 8px rgba(0,0,0,.3), inset 0 -3px 4px rgba(0,0,0,.15);
+  border: 2px solid #999;
+}
+.device-side-dot{
+  position:absolute; width:12px; height:12px; border-radius:50%; background:#7d7d7d;
+  top: 100px; left: 26px; box-shadow: inset 0 1px 2px rgba(0,0,0,.4);
+}
+
+.designs-title{ margin-top: 30px; margin-bottom: 12px; color: var(--gold-bright); font-weight:700; font-family: var(--font-display); text-align:center; }
+.designs-grid{
+  display:grid; grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)); gap:10px;
+  max-width: 480px; margin: 0 auto;
+}
+.design-swatch{
+  width: 52px; height: 52px; border-radius: 14px; border: 2px solid transparent;
+  cursor:pointer; transition: all .25s ease; position:relative;
+}
+.design-swatch.selected{ border-color: var(--gold); transform: scale(1.08); box-shadow: var(--shadow); }

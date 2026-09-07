@@ -1,0 +1,155 @@
+.azkar-wrap{ padding: 20px 16px 60px; max-width: 600px; }
+
+.azkar-cards{ display:flex; flex-direction:column; gap:16px; }
+
+.azkar-card{
+  background: var(--surface); border:1px solid var(--border); border-radius: var(--radius);
+  padding: 20px; box-shadow: var(--shadow); cursor:pointer; -webkit-tap-highlight-color: transparent;
+  transition: all .3s ease; position:relative;
+}
+.azkar-card.done{ border-color: var(--green); background: color-mix(in srgb, var(--green) 10%, var(--surface)); }
+
+.azkar-card-top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.azkar-remaining{
+  background: var(--gold); color:#171203; font-weight:900; font-size:.85rem;
+  width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.azkar-card.done .azkar-remaining{ background: var(--green); color:#fff; }
+.azkar-card.done .azkar-remaining::after{ content:'✓'; }
+
+.azkar-text{ font-family: var(--font-display); font-size: 1.15rem; line-height:2; color: var(--text); text-align:right; }
+.azkar-tap-hint{ margin-top:12px; text-align:center; font-size:.72rem; color: var(--text-dim); }
+/* شريط البحث */
+.search-box {
+  margin: 15px 0;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--surface-2, #1e293b);
+  border: 1px solid var(--border, #334155);
+  color: var(--text, #fff);
+  border-radius: 12px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* الرص العمودي للأذكار */
+.categories-vertical-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* شكل كارت الذكر */
+.islamic-category-card {
+  background: var(--surface, #1e293b);
+  border: 1px solid var(--border, #334155);
+  border-radius: 14px;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* زر نجمة المفضلة */
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.star-btn.fav-active {
+  color: var(--gold, #e2b13c);
+}
+/* تأثير الماوس واللون الأصفر عند التمرير */
+.islamic-category-card, .azkar-card {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none; /* منع تحديد النص عند الضغط المتكرر */
+}
+
+.islamic-category-card:hover {
+  border-color: var(--gold, #e2b13c);
+  box-shadow: 0 0 10px rgba(226, 177, 60, 0.2);
+}
+/* انكماش سريع واهتزاز بصري عند الضغط */
+.azkar-card:active {
+  transform: scale(0.98);
+}
+
+.shake-effect {
+  animation: quickShake 0.15s ease-in-out;
+}
+
+@keyframes quickShake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+/* تصميم صندوق المفكرة */
+.dua-container {
+  background: rgba(255, 255, 255, 0.05); /* لون شفاف شيك */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 0 auto 20px auto;
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* تصميم مربع الكتابة */
+#duaInput {
+  width: 100%;
+  padding: 15px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(0, 0, 0, 0.2);
+  color: white;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+/* تصميم زرار الحفظ */
+.save-btn {
+  background-color: #f1c40f; /* لون أصفر متناسق مع تصميمك */
+  color: #000;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* تصميم الدعاء المحفوظ */
+.saved-dua {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 10px 15px;
+  margin-top: 10px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.saved-dua button {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 5px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
