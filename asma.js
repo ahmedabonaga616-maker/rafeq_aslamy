@@ -133,7 +133,6 @@ safe(()=>{
     document.querySelectorAll('.asma-card.playing').forEach(c=> c.classList.remove('playing'));
     const card = document.querySelector(`.asma-card[data-idx="${i}"]`);
     card?.classList.add('playing');
-    card?.scrollIntoView({behavior:'smooth', block:'center'});
   }
   function playNext(){
     if(!playAllActive || playAllIdx >= asmaAlHusna.length){

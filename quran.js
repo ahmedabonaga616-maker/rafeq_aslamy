@@ -157,7 +157,6 @@ function renderSurahGrid(list){
   shown.forEach((ch, idx)=>{
     const card = document.createElement('div');
     card.className = 'surah-card';
-    card.style.animationDelay = (idx*0.01)+'s';
     const fav = isFavSurah(ch.id);
     card.innerHTML = `
       <button class="surah-fav-star ${fav ? 'active' : ''}" data-id="${ch.id}" title="${fav ? 'إزالة من السور المفضّلة' : 'إضافة للسور المفضّلة'}">${fav ? '⭐' : '☆'}</button>
@@ -320,7 +319,7 @@ async function openSurah(id){
   currentChapter = id;
   surahListScreen.classList.add('hidden');
   readerScreen.classList.remove('hidden');
-  window.scrollTo({top:0, behavior:'smooth'});
+  window.scrollTo({top:0, behavior:'auto'});
   mushafPage.innerHTML = '<div class="loading-box">⏳ جاري تحميل السورة...</div>';
   quranAudio.pause();
   ayahActionBar?.classList.add('hidden');
@@ -590,7 +589,7 @@ async function openFromFavoriteLink(){
       if(ayahActionLabel) ayahActionLabel.textContent = 'آية ' + toEasternDigits(verse);
       ayahActionBar?.classList.remove('hidden');
       // تمرير واحد يدوي القصد منه واضح: المستخدم جاي مقصودًا من المفضلة عشان يشوف الآية
-      ayahEl.scrollIntoView({behavior:'smooth', block:'center'});
+      ayahEl.scrollIntoView({behavior:'auto', block:'center'});
     }
   }
 }

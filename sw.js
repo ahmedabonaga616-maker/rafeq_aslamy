@@ -1,4 +1,4 @@
-const CACHE_NAME = 'islamic-site-v4';
+const CACHE_NAME = 'islamic-site-v5';
 const ASSETS = ['./', './index.html', './style.css', './script.js', './quran.html', './quran.css', './quran.js'];
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)).catch(()=>{}));
@@ -9,8 +9,19 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 self.addEventListener('fetch', (event) => {
-  if(event.request.url.includes('aladhan.com') || event.request.url.includes('openstreetmap.org') || event.request.url.includes('quran.com') || event.request.url.includes('qurancdn.com')){ return; }
-  event.respondWith(caches.match(event.request).then((cached) => cached || fetch(event.request).catch(()=>cached)));
+  const url = event.request.url;
+  if(url.includes('aladhan.com') || url.includes('openstreetmap.org') || url.includes('quran.com') || url.includes('qurancdn.com') || url.includes('mp3quran.net')){ return; }
+  // الشبكة أولًا: أي تحديث في ملفات الموقع (زخرفة، ألوان، إصلاحات) يوصل فورًا لكل الصفحات.
+  // التخزين المؤقت بقى للطوارئ بس (لو النت مقطوع)، وبيتجدد لوحده مع كل طلب ناجح.
+  event.respondWith(
+    fetch(event.request)
+      .then((res)=>{
+        const copy = res.clone();
+        caches.open(CACHE_NAME).then((cache)=> cache.put(event.request, copy)).catch(()=>{});
+        return res;
+      })
+      .catch(()=> caches.match(event.request))
+  );
 });
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();

@@ -24,7 +24,6 @@
   background: var(--surface); border:1px solid var(--border); border-radius: var(--radius);
   padding: 14px; display:flex; align-items:center; gap:12px; cursor:pointer; position:relative;
   transition: transform .25s cubic-bezier(.34,1.56,.64,1), border-color .25s ease, box-shadow .25s ease;
-  animation: card-in .4s ease backwards;
 }
 .surah-card:hover{ transform: translateY(-4px) scale(1.02); border-color: var(--gold); box-shadow: var(--shadow); }
 .surah-fav-star{
