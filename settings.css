@@ -1,0 +1,90 @@
+/* ===================================================================
+   settings.css — صفحة إعدادات الموقع
+=================================================================== */
+.settings-wrap{ padding-top:10px; padding-bottom:60px; }
+
+.settings-section{
+  background: var(--surface); border:1px solid var(--border); border-radius: var(--radius);
+  padding: 20px; margin-bottom: 22px; box-shadow: var(--shadow);
+}
+.settings-section h2{
+  font-family: var(--font-display); color: var(--gold-bright); font-size:1.1rem;
+  display:flex; align-items:center; gap:8px; margin-bottom:6px;
+}
+.settings-desc{ font-size:.8rem; color: var(--text-dim); margin-bottom:16px; line-height:1.8; }
+
+/* -------- صف إعداد فيه تبديل (Switch) -------- */
+.settings-row{
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  padding: 12px 4px; border-top: 1px solid var(--border);
+}
+.settings-row:first-of-type{ border-top:none; padding-top:0; }
+.settings-row .row-label{ font-weight:700; font-size:.9rem; }
+.settings-row .row-sub{ font-size:.75rem; color: var(--text-dim); margin-top:2px; }
+
+/* زرار تبديل (يعيد استخدام .switch/.dot العامة) قابل للضغط */
+.switch-btn{ background:none; border:none; padding:0; cursor:pointer; }
+
+/* -------- اختيار حجم الخط -------- */
+.choice-row{ display:flex; gap:10px; flex-wrap:wrap; }
+.choice-btn{
+  padding:9px 18px; border-radius:30px; border:1px solid var(--border);
+  background: var(--surface-2); color: var(--text); font-weight:700; font-size:.85rem;
+  transition: all .2s ease;
+}
+.choice-btn.active{ background: var(--gold); color:#171203; border-color: var(--gold); }
+
+/* -------- اختيار اللون المميز -------- */
+.accent-row{ display:flex; gap:14px; flex-wrap:wrap; }
+.accent-swatch{
+  width:44px; height:44px; border-radius:50%; border:3px solid transparent;
+  display:flex; align-items:center; justify-content:center; font-size:1rem;
+  transition: transform .2s ease, border-color .2s ease;
+}
+.accent-swatch:hover{ transform: scale(1.08); }
+.accent-swatch.active{ border-color: var(--text); }
+
+/* -------- شبكة الزخارف (40 شكل) -------- */
+.decor-grid{
+  display:grid; grid-template-columns: repeat(auto-fill, minmax(84px,1fr)); gap:10px;
+}
+.decor-swatch{
+  position:relative; aspect-ratio: 1/1; border-radius:14px; overflow:hidden;
+  border:2px solid var(--border); background-color: var(--surface-2);
+  background-repeat: repeat; cursor:pointer; transition: transform .15s ease, border-color .15s ease;
+}
+.decor-swatch:hover{ transform: scale(1.05); }
+.decor-swatch.active{ border-color: var(--gold); box-shadow: 0 0 0 2px color-mix(in srgb, var(--gold) 55%, transparent); }
+.decor-swatch.active::after{
+  content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  font-size:1.3rem; font-weight:900; color:#fff; background: rgba(0,0,0,.35);
+}
+.decor-swatch-num{
+  position:absolute; bottom:2px; left:4px; font-size:.6rem; color: var(--text-dim);
+  background: color-mix(in srgb, var(--surface) 70%, transparent); border-radius:4px; padding:0 3px;
+}
+
+.custom-color-row{
+  display:flex; align-items:center; gap:10px; margin-top:14px; padding-top:14px;
+  border-top:1px dashed var(--border); font-size:.85rem; font-weight:700;
+}
+.custom-color-row input[type="color"]{
+  width:44px; height:44px; padding:0; border:2px solid var(--border); border-radius:50%;
+  background:none; cursor:pointer; overflow:hidden;
+}
+.custom-color-row input[type="color"]::-webkit-color-swatch-wrapper{ padding:0; border-radius:50%; }
+.custom-color-row input[type="color"]::-webkit-color-swatch{ border:none; border-radius:50%; }
+
+.settings-actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:6px; }
+
+/* -------- شريط تأكيد المعاينة الحية -------- */
+.preview-confirm-bar{
+  position: fixed; bottom: 0; left:0; right:0; z-index: 60;
+  display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  background: color-mix(in srgb, var(--gold) 16%, var(--surface));
+  border-top: 2px solid var(--gold);
+  padding: 12px 18px; font-size:.85rem; font-weight:700; color: var(--text);
+  box-shadow: 0 -6px 20px rgba(0,0,0,.25);
+}
+.preview-confirm-bar.hidden{ display:none; }
+.preview-confirm-actions{ display:flex; gap:8px; flex-wrap:wrap; }

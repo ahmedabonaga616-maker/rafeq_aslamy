@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>أسماء الله الحسنى | الموقع الإسلامي الشامل</title>
 <link rel="stylesheet" href="style.css?v=5">
+<script src="settings-core.js?v=1"></script>
 <link rel="stylesheet" href="asma.css?v=5">
 </head>
 <body data-theme="dark">
@@ -26,6 +27,20 @@
 </div>
 
 <main class="container asma-wrap">
+  <div class="asma-day-banner" id="asmaDayBanner"></div>
+
+  <div class="asma-toolbar">
+    <input type="text" id="asmaSearch" class="city-input" placeholder="🔍 ابحث عن اسم أو معنى...">
+    <button class="btn small" id="playAllBtn">▶️ استماع للكل بالتتابع</button>
+    <button class="btn small hidden" id="stopAllBtn">⏹️ إيقاف</button>
+    <button class="btn small" id="favAsmaFilterBtn">💛 المفضّلة</button>
+  </div>
+
+  <div class="asma-progress-wrap">
+    <div class="asma-progress-label">✅ اللي حفظته: <b id="memorizedCount">0</b> / 99</div>
+    <div class="asma-progress-bar"><div class="asma-progress-fill" id="memorizedFill"></div></div>
+  </div>
+
   <p style="color:var(--text-dim); font-size:.85rem; margin-bottom:18px; text-align:center;">اضغط على أي اسم لعرض معناه والاستماع إليه</p>
   <div class="asma-grid" id="asmaGrid"></div>
 </main>
@@ -34,13 +49,19 @@
   <div class="asma-modal-content">
     <h2 id="modalName">--</h2>
     <p id="modalMeaning">--</p>
-    <button class="btn small" id="modalPlayBtn">🔊 استماع</button>
-    <button class="btn primary" id="modalCloseBtn" style="margin-right:8px;">إغلاق</button>
+    <div class="asma-modal-actions">
+      <button class="btn small" id="modalPlayBtn">🔊 استماع</button>
+      <button class="btn small" id="modalFavBtn">☆ مفضّلة</button>
+      <button class="btn small" id="modalMemorizedBtn">✅ حفظته</button>
+      <button class="btn small" id="modalCopyBtn">📋 نسخ</button>
+    </div>
+    <button class="btn primary" id="modalCloseBtn" style="margin-top:14px;">إغلاق</button>
   </div>
 </div>
 
 <audio id="audioAllah" src="audio/Allah.mp3" preload="auto"></audio>
 <audio id="audioClick" src="audio/click.mp3" preload="auto"></audio>
+<div class="toast" id="toastBox"></div>
 <script src="asma-data.js?v=5"></script>
 <script src="asma.js?v=5"></script>
 </body>

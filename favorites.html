@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الآيات المفضلة | الموقع الإسلامي الشامل</title>
+<meta name="description" content="كل الآيات اللي حفظتها في المفضلة من المصحف الشريف، في مكان واحد.">
+<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="favorites.css?v=1">
+<script src="settings-core.js?v=1"></script>
+</head>
+<body data-theme="dark">
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-emblem">⭐</div>
+      <div><div class="brand-name">الآيات المفضلة</div></div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+      <span class="knob"><i id="themeIcon">🌙</i></span>
+    </button>
+  </div>
+</header>
+
+<div class="big-back-wrap">
+  <a href="quran.html" class="big-back-btn">📖 العودة للمصحف</a>
+</div>
+
+<main class="container favorites-wrap">
+  <div class="fav-tabs" id="favTabs">
+    <button class="fav-tab active" data-tab="verses">📖 الآيات المفضّلة</button>
+    <button class="fav-tab" data-tab="surahs">💛 السور المفضّلة</button>
+    <button class="fav-tab" data-tab="names">🌙 أسماء الله الحسنى</button>
+  </div>
+  <section id="versesTab">
+    <p class="fav-count" id="favCount"></p>
+    <div id="favContainer"></div>
+  </section>
+  <section id="surahsTab" class="hidden">
+    <p class="fav-count" id="favSurahCount"></p>
+    <div id="favSurahContainer"></div>
+  </section>
+  <section id="namesTab" class="hidden">
+    <p class="fav-count" id="favNameCount"></p>
+    <div id="favNameContainer"></div>
+  </section>
+</main>
+
+<div class="toast" id="toastBox"></div>
+<audio id="audioClick" src="audio/click.mp3" preload="auto"></audio>
+
+<footer class="site-footer container">
+  <div class="footer-links">
+    <a href="index.html">الرئيسية</a>
+    <a href="quran.html">المصحف الشريف</a>
+    <a href="settings.html">إعدادات الموقع</a>
+  </div>
+</footer>
+
+<script src="asma-data.js?v=5"></script>
+<script src="favorites.js?v=1"></script>
+</body>
+</html>

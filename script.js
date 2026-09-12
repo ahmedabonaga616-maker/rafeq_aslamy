@@ -22,9 +22,76 @@ function showToast(msg, duration=4000){
 
 /* ---------------- صوت الكليك ---------------- */
 const audioClick = $('audioClick');
-function playClick(){ try{ audioClick.currentTime = 0; audioClick.play().catch(()=>{}); }catch(e){} }
+function playClick(){
+  if(window.siteSettings && !window.siteSettings.soundEnabled()) return;
+  try{ audioClick.currentTime = 0; audioClick.play().catch(()=>{}); }catch(e){}
+}
 function vibrate(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms); }catch(e){} }
 document.addEventListener('click', (e)=>{ if(e.target.closest('button, .nav-card, a')) playClick(); });
+
+/* ---------------- تأثير الموجة (Ripple) عند الضغط على أي زرار/كارت ---------------- */
+document.addEventListener('click', (e)=>{
+  const el = e.target.closest('.btn, .icon-btn, .nav-card, .progress-step');
+  if(!el) return;
+  try{
+    const rect = el.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const span = document.createElement('span');
+    span.className = 'ripple';
+    span.style.width = span.style.height = size + 'px';
+    span.style.left = (e.clientX - rect.left - size/2) + 'px';
+    span.style.top = (e.clientY - rect.top - size/2) + 'px';
+    const prevPos = getComputedStyle(el).position;
+    if(prevPos === 'static') el.style.position = 'relative';
+    if(getComputedStyle(el).overflow === 'visible') el.style.overflow = 'hidden';
+    el.appendChild(span);
+    setTimeout(()=> span.remove(), 600);
+  }catch(err){}
+});
+
+/* ---------------- فتح تشغيل الصوت أول ما المستخدم يلمس/يدوس أي حاجة ----------------
+   المتصفحات (خصوصًا الموبايل) بتمنع تشغيل صوت من setInterval لوحده من غير تفاعل
+   مباشر من المستخدم. الحل: أول ما يحصل أي لمسة/دوسة في الصفحة، نشغّل كل الأصوات
+   لحظة واحدة (صامتة عمليًا لأنها بتتوقف فورًا) عشان "نفتحها" للمتصفح، وبعدها أي
+   تشغيل تلقائي (زي تذكير الصلاة على النبي ﷺ) هيشتغل عادي. */
+let audioUnlocked = false;
+function unlockAllAudio(){
+  if(audioUnlocked) return;
+  audioUnlocked = true;
+  ['audioMohamed','audioAdhan','audioNearFajr','audioNearDhuhr','audioNearAsr','audioNearMaghrib','audioNearIsha'].forEach(id=>{
+    const el = $(id);
+    if(!el) return;
+    try{
+      el.muted = true;
+      const p = el.play();
+      if(p && p.then){
+        p.then(()=>{ el.pause(); el.currentTime = 0; el.muted = false; }).catch(()=>{ el.muted = false; });
+      } else { el.pause(); el.currentTime = 0; el.muted = false; }
+    }catch(e){}
+  });
+}
+['click','touchstart'].forEach(ev=> document.addEventListener(ev, unlockAllAudio, { once:true }));
+
+/* ---------------- رسالة ترحيب أول زيارة ---------------- */
+safe(()=>{
+  const modal = $('welcomeModal');
+  if(!modal) return;
+  if(localStorage.getItem('welcome-msg-seen') !== '1'){
+    modal.classList.add('show');
+  }
+  function closeWelcome(){
+    modal.classList.remove('show');
+    localStorage.setItem('welcome-msg-seen', '1');
+  }
+  $('welcomeCloseBtn')?.addEventListener('click', closeWelcome);
+  $('welcomeCloseX')?.addEventListener('click', closeWelcome);
+  modal.addEventListener('click', (e)=>{ if(e.target === modal) closeWelcome(); });
+  $('welcomeShareBtn')?.addEventListener('click', ()=>{
+    const msg = encodeURIComponent('موقع إسلامي شامل جميل جدًا، جربه: ' + location.href);
+    if(navigator.share){ navigator.share({title:'الموقع الإسلامي الشامل', url: location.href}); }
+    else { window.open('https://wa.me/?text=' + msg, '_blank'); }
+  });
+}, 'رسالة الترحيب');
 
 /* ---------------- الوضع الليلي/النهاري ---------------- */
 safe(()=>{
@@ -208,6 +275,24 @@ function renderTimes(){
   }, 'عرض الأوقات');
   safe(updateCountdown, 'العداد التنازلي');
 }
+
+/* ---------------- نسخ مواقيت اليوم كاملة ---------------- */
+safe(()=>{
+  $('copyTimesBtn')?.addEventListener('click', ()=>{
+    if(!currentTimings){ showToast('لسه مافيش مواقيت متحمّلة'); return; }
+    const label = $('currentLocationLabel')?.textContent?.replace('📍 ', '') || '';
+    const text = `🕌 مواقيت الصلاة${label ? ' - ' + label : ''}\n` +
+      `الفجر: ${to12h(currentTimings.Fajr)}\n` +
+      `الشروق: ${to12h(currentTimings.Sunrise)}\n` +
+      `الظهر: ${to12h(currentTimings.Dhuhr)}\n` +
+      `العصر: ${to12h(currentTimings.Asr)}\n` +
+      `المغرب: ${to12h(currentTimings.Maghrib)}\n` +
+      `العشاء: ${to12h(currentTimings.Isha)}`;
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(()=> showToast('✅ تم نسخ مواقيت اليوم')).catch(()=>{});
+    }
+  });
+}, 'نسخ مواقيت اليوم');
 
 safe(()=>{
   $('gpsBtn').addEventListener('click', ()=>{

@@ -1,0 +1,172 @@
+/* ===================================================================
+   المصحف الشريف - quran.css
+=================================================================== */
+.hidden{ display:none !important; }
+
+.quran-wrap{ padding-top: 10px; padding-bottom: 60px; }
+
+.trust-note{
+  background: var(--surface); border:1px solid var(--border); border-radius: var(--radius);
+  padding: 12px 16px; font-size:.82rem; color: var(--text-dim); margin-bottom: 18px; line-height:1.9;
+}
+.trust-note a{ color: var(--gold-bright); font-weight:700; text-decoration: underline; }
+
+/* -------- شريط الأدوات فوق قائمة السور -------- */
+.quran-toolbar{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; justify-content:space-between; margin-bottom:18px; }
+.quran-toolbar .city-input{ flex:1; min-width:220px; }
+.continuous-label{ display:flex; align-items:center; gap:8px; font-size:.8rem; color:var(--text-dim); cursor:pointer; }
+.continuous-label input{ width:18px; height:18px; accent-color: var(--gold); }
+
+/* -------- شبكة السور -------- */
+.surah-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap:12px; }
+.loading-box{ text-align:center; padding:40px 10px; color:var(--text-dim); grid-column: 1 / -1; }
+.surah-card{
+  background: var(--surface); border:1px solid var(--border); border-radius: var(--radius);
+  padding: 14px; display:flex; align-items:center; gap:12px; cursor:pointer; position:relative;
+  transition: transform .25s cubic-bezier(.34,1.56,.64,1), border-color .25s ease, box-shadow .25s ease;
+  animation: card-in .4s ease backwards;
+}
+.surah-card:hover{ transform: translateY(-4px) scale(1.02); border-color: var(--gold); box-shadow: var(--shadow); }
+.surah-fav-star{
+  position:absolute; top:6px; left:6px; font-size:1.1rem; line-height:1; padding:4px;
+  color: var(--text-dim); transition: transform .15s ease, color .15s ease;
+}
+.surah-fav-star:hover{ transform: scale(1.2); }
+.surah-fav-star.active{ color: var(--gold-bright); }
+.surah-card .num{
+  width:38px; height:38px; flex:none; border-radius:50%; border:1.5px solid var(--gold);
+  display:flex; align-items:center; justify-content:center; font-weight:700; color: var(--gold-bright); font-size:.85rem;
+}
+.surah-card .info{ flex:1; min-width:0; }
+.surah-card .ar-name{ font-family: var(--font-display); font-size:1.15rem; color: var(--text); font-weight:700; }
+.surah-card .meta{ font-size:.72rem; color: var(--text-dim); margin-top:2px; }
+
+/* -------- بانر "كمّل من حيث وقفت" -------- */
+.resume-banner{
+  display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;
+  background: color-mix(in srgb, var(--green) 12%, var(--surface));
+  border:1px solid var(--green); border-radius: var(--radius);
+  padding: 12px 16px; margin-bottom:14px; font-size:.9rem; text-align:center;
+}
+
+/* -------- تصغير/تكبير خط المصحف -------- */
+.font-size-ctrl{ display:flex; gap:6px; }
+.font-size-ctrl .btn{ padding:6px 12px; font-family: var(--font-display); }
+
+/* -------- شريط إجراء الآية (نسخ) -------- */
+.ayah-action-bar{
+  position: sticky; top: 70px; z-index: 20;
+  display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap;
+  background: var(--surface); border:1px solid var(--gold); border-radius: 30px;
+  padding: 8px 18px; margin-bottom:10px; width:fit-content; margin-inline:auto;
+  box-shadow: var(--shadow); font-size:.85rem; font-weight:700; color: var(--gold-bright);
+}
+.ayah-hint{ text-align:center; font-size:.75rem; color: var(--text-dim); margin-top:10px; }
+
+/* -------- تلميح ميزة المفضلة -------- */
+.fav-hint{
+  display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;
+  background: color-mix(in srgb, var(--gold) 14%, var(--surface));
+  border:1px solid var(--gold); border-radius: 14px;
+  padding: 10px 16px; margin-bottom:14px; font-size:.8rem; font-weight:700; color: var(--text);
+  text-align:center;
+}
+.fav-hint-close{
+  background:none; border:none; color: var(--text-dim); font-size:.9rem; cursor:pointer; padding:2px 6px;
+}
+.fav-hint.hidden{ display:none; }
+
+/* -------- شريط أدوات صفحة القراءة -------- */
+.reader-toolbar{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+.reader-nav{ display:flex; gap:8px; }
+
+.reciter-bar{
+  background: var(--surface); border:1px solid var(--border); border-radius: var(--radius);
+  padding: 14px 16px; display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-bottom: 20px;
+}
+.reciter-bar label{ font-size:.85rem; font-weight:700; color: var(--gold-bright); white-space:nowrap; }
+
+/* -------- قائمة القراء: قائمة معروضة ثابتة داخل الصفحة + بحث -------- */
+.reciter-picker{ position:relative; }
+.reciter-picker-toggle{ max-width: 260px; justify-content:space-between; }
+.reciter-picker-toggle .caret{ transition: transform .2s ease; }
+.reciter-picker.open .reciter-picker-toggle .caret{ transform: rotate(180deg); }
+.reciter-picker-toggle span:not(.caret){ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:190px; display:inline-block; vertical-align:middle; }
+
+.reciter-panel{
+  margin-top:8px; width: min(360px, 90vw);
+  background: var(--surface); border:1px solid var(--gold); border-radius: 14px;
+  padding: 10px; box-shadow: var(--shadow);
+}
+.reciter-panel input{ width:100%; margin-bottom:8px; }
+.reciter-list{
+  display:flex; flex-direction:column; gap:4px; max-height: 260px; overflow-y:auto;
+}
+.reciter-item{
+  text-align:right; padding:9px 12px; border-radius:10px; font-size:.85rem;
+  background: var(--surface-2); transition: background .15s ease, color .15s ease;
+}
+.reciter-item:hover{ background: color-mix(in srgb, var(--gold) 16%, var(--surface-2)); }
+.reciter-item.active{ background: var(--gold); color:#171203; font-weight:700; }
+.reciter-empty{ text-align:center; padding:14px; color: var(--text-dim); font-size:.82rem; }
+.player-controls{ display:flex; align-items:center; gap:10px; flex:1; min-width:220px; }
+.round-btn{
+  width:42px; height:42px; border-radius:50%; flex:none; font-size:1.1rem;
+  background: var(--gold); color:#171203; display:flex; align-items:center; justify-content:center;
+  transition: transform .2s cubic-bezier(.34,1.56,.64,1); position:relative; overflow:hidden;
+}
+.round-btn:hover{ transform: scale(1.1); box-shadow: 0 0 16px 3px color-mix(in srgb, var(--gold) 65%, transparent); }
+.round-btn:active{ transform: scale(.92); box-shadow: 0 0 10px 2px color-mix(in srgb, var(--gold) 75%, transparent); }
+.seek-wrap{ flex:1; min-width:120px; }
+.seek-wrap input[type="range"]{ width:100%; accent-color: var(--gold); }
+.time-row{ display:flex; justify-content:space-between; font-size:.68rem; color: var(--text-dim); margin-top:2px; }
+.dl-progress{ font-size:.75rem; color: var(--gold-bright); font-weight:700; }
+
+/* -------- صفحة المصحف (شكل ورقي فاخر) -------- */
+.mushaf-page{
+  --ayat-scale: 1;
+  background: linear-gradient(180deg, #fbf3e6, #f6ead6);
+  color: #2b1c0f;
+  border: 2px solid var(--gold);
+  border-radius: 20px;
+  padding: 30px 26px;
+  box-shadow: 0 15px 40px rgba(0,0,0,.35), inset 0 0 0 6px rgba(201,162,75,.15);
+  position: relative;
+}
+[data-theme="light"] .mushaf-page{ background: linear-gradient(180deg, #fffaf0, #fbf0da); }
+
+.surah-frame{
+  text-align:center; margin-bottom: 22px; padding: 14px 10px;
+  border: 2px solid #c9a24b; border-radius: 14px;
+  background: repeating-linear-gradient(135deg, rgba(201,162,75,.08) 0 10px, rgba(201,162,75,.02) 10px 20px);
+}
+.surah-frame .name{ font-family: var(--font-display); font-size: 1.8rem; color:#7a5a18; font-weight:700; }
+.surah-frame .sub{ font-size:.78rem; color:#8a6d3c; margin-top:4px; }
+
+.basmala{
+  text-align:center; font-family: var(--font-display); font-size: 1.7rem; color:#3a2a12;
+  margin-bottom: 20px;
+}
+
+.ayat-block{
+  font-family: var(--font-display);
+  font-size: calc(1.55rem * var(--ayat-scale, 1)); line-height: 2.6; text-align: justify; text-align-last: center;
+  direction: rtl;
+}
+.ayah{ transition: background .25s ease, border-radius .25s ease; cursor:pointer; }
+.ayah.active-ayah{ background: rgba(201,162,75,.28); border-radius: 6px; }
+.word{ display:inline-block; padding: 0 1px; transition: color .15s ease, transform .15s ease; }
+.word.active-word{ color:#a6291a; transform: scale(1.06); }
+.ayah-end{
+  display:inline-flex; align-items:center; justify-content:center;
+  width: 30px; height:30px; border-radius:50%;
+  border: 1.5px solid #c9a24b; color:#7a5a18; background: rgba(201,162,75,.12);
+  font-size: .82rem; font-family: var(--font-body); font-weight:700;
+  margin: 0 4px; vertical-align: middle;
+}
+
+@media (max-width: 640px){
+  .ayat-block{ font-size: calc(1.25rem * var(--ayat-scale, 1)); line-height:2.4; }
+  .mushaf-page{ padding: 20px 14px; }
+  .player-controls{ order:3; width:100%; }
+}

@@ -61,22 +61,44 @@
 }
 .calm-msg.show{ opacity:1; }
 
-/* -------- وضع سبحة اليد: جهاز عداد رقمي (زي الصورة) -------- */
-.hand-device-wrap{ display:flex; justify-content:center; margin-bottom: 10px; }
+/* -------- وضع سبحة اليد: جهاز عداد رقمي، بشكل مطوّر بلمسة إسلامية -------- */
+.hand-device-wrap{ display:flex; justify-content:center; margin-bottom: 34px; padding-top:6px; }
 .hand-device{
-  width: 220px; padding: 20px 18px 26px; border-radius: 50% 50% 22px 22px / 60% 60% 18px 18px;
+  position: relative;
+  width: 230px; padding: 26px 20px 34px; border-radius: 50% 50% 24px 24px / 62% 62% 20px 20px;
   background: var(--device-skin, linear-gradient(160deg, #e8e8e8, #bfbfbf));
-  box-shadow: var(--shadow), inset 0 2px 6px rgba(255,255,255,.4), inset 0 -6px 10px rgba(0,0,0,.15);
+  border: 3px solid color-mix(in srgb, var(--gold) 55%, #0000);
+  box-shadow: var(--shadow), inset 0 2px 6px rgba(255,255,255,.4), inset 0 -6px 10px rgba(0,0,0,.15),
+              0 0 0 6px color-mix(in srgb, var(--gold) 10%, transparent);
   cursor: pointer; user-select:none; -webkit-tap-highlight-color: transparent;
   display:flex; flex-direction:column; align-items:center; gap:16px;
-  transition: transform .15s ease;
+  transition: transform .15s ease, box-shadow .2s ease;
 }
+/* -- شريط خرزات زخرفي أعلى الجهاز -- */
+.hand-device::before{
+  content:'⚬ ⚬ ⚬ ⚬ ⚬ ⚬ ⚬';
+  position:absolute; top:-14px; left:50%; transform:translateX(-50%);
+  font-size:.7rem; letter-spacing:6px; color: var(--gold); opacity:.75; pointer-events:none;
+}
+/* -- شُرّابة زخرفية أسفل الجهاز -- */
+.hand-device::after{
+  content:''; position:absolute; bottom:-22px; left:50%; transform:translateX(-50%);
+  width:3px; height:20px; background: var(--gold);
+  box-shadow: -8px 4px 0 -1px var(--gold), 8px 4px 0 -1px var(--gold);
+  border-radius: 2px;
+}
+.hand-device:hover{ box-shadow: var(--shadow), inset 0 2px 6px rgba(255,255,255,.4), inset 0 -6px 10px rgba(0,0,0,.15), 0 0 0 6px color-mix(in srgb, var(--gold) 22%, transparent); }
 .hand-device.tapped{ transform: scale(.97); }
 .hand-device.cooldown{ opacity:.7; }
 
 .lcd-screen{
-  width: 100%; background: #cbd6c4; border: 3px solid #2b2b2b; border-radius: 8px;
+  position:relative; width: 100%; background: #cbd6c4; border: 3px solid #2b2b2b; border-radius: 8px;
   padding: 10px 10px 6px; box-shadow: inset 0 3px 8px rgba(0,0,0,.35);
+  overflow:hidden;
+}
+.lcd-screen::before{
+  content:''; position:absolute; inset:0; background: linear-gradient(120deg, rgba(255,255,255,.35) 0%, transparent 35%);
+  pointer-events:none;
 }
 .lcd-number{
   font-family: 'Courier New', monospace; font-weight:900; font-size: 2.6rem; color:#1c1c1c;
@@ -85,10 +107,16 @@
 .lcd-labels{ display:flex; justify-content:space-between; font-size:.6rem; color:#2b2b2b; font-weight:700; margin-top:4px; }
 
 .device-button{
-  width: 64px; height: 64px; border-radius: 50%;
+  position:relative; width: 68px; height: 68px; border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #ffffff, #d8d8d8 70%, #b0b0b0);
-  box-shadow: 0 4px 8px rgba(0,0,0,.3), inset 0 -3px 4px rgba(0,0,0,.15);
+  box-shadow: 0 4px 8px rgba(0,0,0,.3), inset 0 -3px 4px rgba(0,0,0,.15),
+              0 0 0 3px color-mix(in srgb, var(--gold) 45%, transparent);
   border: 2px solid #999;
+  transition: box-shadow .2s ease;
+}
+.hand-device.tapped .device-button{
+  box-shadow: 0 2px 4px rgba(0,0,0,.3), inset 0 -2px 3px rgba(0,0,0,.2),
+              0 0 0 6px color-mix(in srgb, var(--gold) 55%, transparent);
 }
 .device-side-dot{
   position:absolute; width:12px; height:12px; border-radius:50%; background:#7d7d7d;
@@ -105,3 +133,43 @@
   cursor:pointer; transition: all .25s ease; position:relative;
 }
 .design-swatch.selected{ border-color: var(--gold); transform: scale(1.08); box-shadow: var(--shadow); }
+
+/* -------- إضافة ذكر خاص -------- */
+.custom-dhikr-row{
+  display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:18px;
+}
+.custom-dhikr-row input[type="text"]{
+  flex:1; min-width:180px; max-width:320px; padding:10px 14px; border-radius:30px;
+  border:1px solid var(--border); background: var(--surface-2); color: var(--text); font-size:.85rem;
+}
+
+/* -------- اختيار الهدف -------- */
+.target-row{
+  display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; margin-bottom:16px;
+}
+.target-label{ font-size:.85rem; color: var(--text-dim); font-weight:700; }
+.target-btn{
+  padding:7px 14px; border-radius:20px; border:1px solid var(--border);
+  background: var(--surface-2); color: var(--text); font-weight:700; font-size:.8rem; transition: all .2s ease;
+}
+.target-btn.active{ background: var(--gold); color:#171203; border-color: var(--gold); }
+.custom-target-input{
+  width:90px; padding:7px 10px; border-radius:20px; border:1px solid var(--gold);
+  background: var(--surface-2); color: var(--text); font-size:.85rem; text-align:center;
+}
+.custom-target-input.hidden{ display:none; }
+
+/* -------- وضع التسبيح بعد الصلاة -------- */
+.sequence-toggle{ display:block; margin: 0 auto 8px; }
+.sequence-toggle.active{ background: var(--gold); color:#171203; border-color: var(--gold); }
+.sequence-status{
+  text-align:center; font-size:.78rem; color: var(--gold-bright); margin-bottom:16px; font-weight:700;
+}
+.sequence-status.hidden{ display:none; }
+
+/* -------- إحصائية اليوم والمتتالية -------- */
+.stats-row{
+  display:flex; justify-content:center; gap:20px; font-size:.8rem; color: var(--text-dim);
+  margin-bottom:18px; flex-wrap:wrap;
+}
+.stats-row b{ color: var(--gold-bright); }

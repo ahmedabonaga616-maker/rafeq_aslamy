@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>السبحة الإلكترونية | الموقع الإسلامي الشامل</title>
 <link rel="stylesheet" href="style.css?v=5">
+<script src="settings-core.js?v=1"></script>
 <link rel="stylesheet" href="tasbih.css?v=5">
 </head>
 <body data-theme="dark">
@@ -45,6 +46,29 @@
     </select>
   </div>
 
+  <div class="custom-dhikr-row">
+    <input type="text" id="customDhikrInput" maxlength="60" placeholder="✍️ أضف ذكرًا من عندك ويتحفظ في القايمة...">
+    <button class="btn small" id="addCustomDhikrBtn">➕ إضافة</button>
+  </div>
+
+  <div class="target-row" id="targetRow">
+    <span class="target-label">🎯 الهدف:</span>
+    <button class="target-btn" data-target="33">33</button>
+    <button class="target-btn" data-target="99">99</button>
+    <button class="target-btn" data-target="100">100</button>
+    <button class="target-btn" data-target="1000">1000</button>
+    <button class="target-btn" data-target="custom">🔢 مخصوص</button>
+    <input type="number" id="customTargetInput" class="custom-target-input hidden" min="1" max="99999" placeholder="اكتب رقم">
+  </div>
+
+  <button class="btn small sequence-toggle" id="sequenceModeBtn">🔁 وضع تسبيح بعد الصلاة (٣٣ / ٣٣ / ٣٤)</button>
+  <div class="sequence-status hidden" id="sequenceStatus"></div>
+
+  <div class="stats-row" id="statsRow">
+    <span>📅 اليوم: <b id="todayCount">0</b></span>
+    <span>🔥 متتالية: <b id="streakCount">0</b> يوم</span>
+  </div>
+
   <section class="tasbih-view" id="modernView">
     <div class="dhikr-display" id="dhikrDisplayModern">سُبْحَانَ اللَّهِ</div>
     <div class="circular-counter" id="circularCounter">
@@ -54,10 +78,11 @@
       </svg>
       <div class="counter-center">
         <span class="count-num" id="countNum">0</span>
-        <span class="count-total">/ 33</span>
+        <span class="count-total">/ <b id="targetDisplay">33</b></span>
       </div>
     </div>
     <div class="tasbih-controls">
+      <button class="btn small" id="undoBtn">↶ تراجع</button>
       <button class="btn small" id="resetBtn">↺ تصفير</button>
       <span class="total-badge">الإجمالي: <b id="totalCount">0</b></span>
     </div>
@@ -78,7 +103,8 @@
     </div>
 
     <div class="tasbih-controls">
-      <span class="total-badge">/ 33</span>
+      <span class="total-badge">/ <b id="targetDisplayHand">33</b></span>
+      <button class="btn small" id="undoHandBtn">↶ تراجع</button>
       <button class="btn small" id="resetHandBtn">↺ تصفير</button>
     </div>
     <p class="calm-msg" id="calmMsgHand"></p>

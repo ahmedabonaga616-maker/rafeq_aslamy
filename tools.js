@@ -2,6 +2,14 @@ function $(id){ return document.getElementById(id); }
 function safe(fn, label){ try{ fn(); }catch(e){ console.error('خطأ في: '+label, e); } }
 
 const body = document.body;
+const toastBox = $('toastBox');
+function showToast(msg, duration=3000){
+  if(!toastBox) return;
+  toastBox.textContent = msg;
+  toastBox.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=> toastBox.classList.remove('show'), duration);
+}
 safe(()=>{
   const themeToggle = $('themeToggle');
   const themeIcon = $('themeIcon');
@@ -39,7 +47,7 @@ if (tabG2H && tabH2G) {
 function showTodayDate() {
   const now = new Date();
   
-  const hijriFormatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-uma', {
+  const hijriFormatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
@@ -66,7 +74,7 @@ document.getElementById('convertG2HBtn')?.addEventListener('click', () => {
   if (!val) { alert('الرجاء اختيار تاريخ ميلادي أولاً'); return; }
   
   const dateObj = new Date(val);
-  const formatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-uma', {
+  const formatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
@@ -76,6 +84,14 @@ document.getElementById('convertG2HBtn')?.addEventListener('click', () => {
   const resBox = document.getElementById('g2hResult');
   resBox.style.display = 'block';
   resBox.innerText = `التاريخ الهجري: ${formatter.format(dateObj)}`;
+  document.getElementById('copyG2HBtn')?.classList.remove('hidden');
+});
+document.getElementById('copyG2HBtn')?.addEventListener('click', ()=>{
+  const text = document.getElementById('g2hResult')?.innerText || '';
+  if(!text) return;
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=> showToast('✅ تم نسخ التاريخ الهجري')).catch(()=>{});
+  }
 });
 
 // تحويل من هجري للميلادي
@@ -115,6 +131,14 @@ document.getElementById('convertH2GBtn')?.addEventListener('click', () => {
   const resBox = document.getElementById('h2gResult');
   resBox.style.display = 'block';
   resBox.innerText = `التاريخ الميلادي: ${formatter.format(gDate)}`;
+  document.getElementById('copyH2GBtn')?.classList.remove('hidden');
+});
+document.getElementById('copyH2GBtn')?.addEventListener('click', ()=>{
+  const text = document.getElementById('h2gResult')?.innerText || '';
+  if(!text) return;
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=> showToast('✅ تم نسخ التاريخ الميلادي')).catch(()=>{});
+  }
 });
 document.getElementById('findMosqueBtn')?.addEventListener('click', () => {
   const status = document.getElementById('mosqueStatus');
@@ -200,6 +224,9 @@ function updateRamadanCountdown() {
   document.getElementById('ramadanMinutes').innerText = minutes < 10 ? '0' + minutes : minutes;
   document.getElementById('ramadanSeconds').innerText = seconds < 10 ? '0' + seconds : seconds;
 }
+// تشغيل العداد فورًا ثم تحديثه كل ثانية (كان معرّف بس مش متنادى منين، فكان بيفضل واقف على --)
+updateRamadanCountdown();
+setInterval(updateRamadanCountdown, 1000);
 /* ---------------- التقويم الهجري "الفاخر" ---------------- */
 safe(()=>{
   const calGrid = $('hijriCalGrid');

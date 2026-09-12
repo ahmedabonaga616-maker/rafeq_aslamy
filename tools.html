@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>الأدوات | الموقع الإسلامي الشامل</title>
   <link rel="stylesheet" href="style.css?v=5">
+<script src="settings-core.js?v=1"></script>
   <link rel="stylesheet" href="tools.css?v=5">
 </head>
 <body data-theme="dark">
@@ -57,6 +58,7 @@
           <input type="date" id="gregInput" class="custom-input">
           <button id="convertG2HBtn" class="btn-primary">تحويل للهجري ✨</button>
           <div id="g2hResult" class="result-card" style="display:none;"></div>
+          <button id="copyG2HBtn" class="btn small hidden" style="margin-top:10px;">📋 نسخ النتيجة</button>
         </div>
 
         <!-- تحويل من هجري لـ ميلادي -->
@@ -82,6 +84,7 @@
           </div>
           <button id="convertH2GBtn" class="btn-primary">تحويل للميلادي ✨</button>
           <div id="h2gResult" class="result-card" style="display:none;"></div>
+          <button id="copyH2GBtn" class="btn small hidden" style="margin-top:10px;">📋 نسخ النتيجة</button>
         </div>
       </div>
     </section>
@@ -271,6 +274,7 @@
     </section>
   </main>
 
+  <div class="toast" id="toastBox"></div>
   <script src="tools.js"></script>
 </body>
 </html>

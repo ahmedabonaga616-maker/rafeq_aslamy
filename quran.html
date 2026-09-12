@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المصحف الشريف | الموقع الإسلامي الشامل</title>
+<meta name="description" content="المصحف الشريف كاملًا بالرسم العثماني، مع مجموعة واسعة من القراء وتحميل موثوق للصوتيات.">
+<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="quran.css?v=2">
+<script src="settings-core.js?v=1"></script>
+</head>
+<body data-theme="dark">
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-emblem">☾</div>
+      <div><div class="brand-name">المصحف الشريف</div></div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+      <span class="knob"><i id="themeIcon">🌙</i></span>
+    </button>
+  </div>
+</header>
+
+<div class="big-back-wrap">
+  <a href="index.html" class="big-back-btn">🏠 العودة للرئيسية</a>
+</div>
+
+<main class="container quran-wrap">
+
+  <div class="trust-note">
+    ✅ نص المصحف هنا هو <b>الرسم العثماني المعتمد</b> المُستخدم في منصة Quran.com، وهو نفس النص الذي راجعه مجمع الملك فهد لطباعة المصحف الشريف بالمدينة المنورة. أما الصوتيات فمصدرها شبكة قراء mp3quran.net الموثوقة، وروابط تحميلها ثابتة ومباشرة. لو حابب نسخة PDF رسمية مصوَّرة من المصحف، اضغط
+    <a href="https://qurancomplex.gov.sa" target="_blank" rel="noopener">هنا لموقع المجمع الرسمي</a>.
+  </div>
+
+  <!-- شاشة قائمة السور -->
+  <section id="surahListScreen">
+    <div class="resume-banner hidden" id="resumeBanner"></div>
+    <div class="quran-toolbar">
+      <input type="text" id="surahSearch" class="city-input" placeholder="🔍 ابحث عن سورة بالاسم أو رقمها...">
+      <label class="continuous-label">
+        <input type="checkbox" id="continueAllToggle">
+        تشغيل القرآن كله متواصل (يقرأ سورة بعد سورة)
+      </label>
+      <button class="btn small" id="favSurahsFilterBtn">💛 السور المفضّلة</button>
+      <a href="favorites.html" class="btn small">⭐ الآيات المفضلة</a>
+    </div>
+    <div class="surah-grid" id="surahGrid">
+      <div class="loading-box">⏳ جاري تحميل قائمة السور...</div>
+    </div>
+  </section>
+
+  <!-- شاشة قراءة السورة -->
+  <section id="readerScreen" class="hidden">
+    <div class="reader-toolbar">
+      <button class="btn small" id="backToListBtn">◀ كل السور</button>
+      <div class="reader-nav">
+        <button class="btn small" id="prevSurahBtn">السورة السابقة ▶</button>
+        <button class="btn small" id="nextSurahBtn">◀ السورة التالية</button>
+      </div>
+      <a href="favorites.html" class="btn small">⭐ المفضلة</a>
+    </div>
+
+    <div class="reciter-bar">
+      <div class="reciter-picker" id="reciterPicker">
+        <button class="btn small reciter-picker-toggle" id="reciterPickerToggle" type="button">
+          🎙️ <span id="reciterCurrentName">جاري تحميل القراء...</span> <span class="caret">▾</span>
+        </button>
+        <div class="reciter-panel hidden" id="reciterPanel">
+          <input type="text" id="reciterSearchInput" class="city-input" placeholder="🔍 ابحث عن اسم الشيخ...">
+          <div class="reciter-list" id="reciterList"></div>
+        </div>
+      </div>
+      <button class="btn small hidden" id="recitersRetryBtn">🔄 إعادة تحميل القراء</button>
+
+      <div class="font-size-ctrl" title="حجم خط المصحف">
+        <button class="btn small" id="fontDecBtn" aria-label="تصغير الخط">A-</button>
+        <button class="btn small" id="fontIncBtn" aria-label="تكبير الخط">A+</button>
+      </div>
+
+      <div class="player-controls">
+        <button class="round-btn" id="playPauseBtn" title="تشغيل/إيقاف">▶️</button>
+        <div class="seek-wrap">
+          <input type="range" id="seekBar" min="0" max="100" value="0" step="0.1">
+          <div class="time-row"><span id="curTime">00:00</span><span id="durTime">00:00</span></div>
+        </div>
+        <button class="round-btn" id="downloadSurahBtn" title="تحميل صوت هذه السورة">⬇️</button>
+      </div>
+      <button class="btn small" id="downloadAllBtn">⬇️ تحميل المصحف كامل بصوت هذا الشيخ (114 ملف)</button>
+      <span class="dl-progress" id="dlProgress"></span>
+    </div>
+
+    <div class="fav-hint hidden" id="favHintBanner">
+      💡 عايز تحفظ آية في المفضلة؟ دوس عليها هنا تحت، وهيظهر زرار "⭐ إضافة للمفضلة".
+      <button class="fav-hint-close" id="favHintClose" aria-label="إغلاق">✕</button>
+    </div>
+
+    <div class="ayah-action-bar hidden" id="ayahActionBar">
+      <span id="ayahActionLabel"></span>
+      <button class="btn small primary" id="copyAyahBtn">📋 نسخ الآية</button>
+      <button class="btn small" id="favAyahBtn">⭐ إضافة للمفضلة</button>
+    </div>
+
+    <div class="mushaf-page" id="mushafPage">
+      <div class="loading-box">⏳ جاري تحميل السورة...</div>
+    </div>
+    <p class="ayah-hint">💡 اضغط على أي آية لتظليلها ونسخها</p>
+  </section>
+
+</main>
+
+<div class="toast" id="toastBox"></div>
+<audio id="audioClick" src="audio/click.mp3" preload="auto"></audio>
+<audio id="quranAudio" preload="none"></audio>
+
+<script src="quran.js?v=2"></script>
+</body>
+</html>

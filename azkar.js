@@ -16,7 +16,10 @@ safe(()=>{
 }, 'الوضع الليلي');
 
 const audioClick = $('audioClick');
-function playClick(){ try{ audioClick.currentTime = 0; audioClick.play().catch(()=>{}); }catch(e){} }
+function playClick(){
+  if(window.siteSettings && !window.siteSettings.soundEnabled()) return;
+  try{ audioClick.currentTime = 0; audioClick.play().catch(()=>{}); }catch(e){}
+}
 document.addEventListener('click', (e)=>{ if(e.target.closest('button,a,.azkar-card')) playClick(); });
 
 const toastBox = $('toastBox');
@@ -27,6 +30,9 @@ function showToast(msg, duration=3000){
   showToast._t = setTimeout(()=> toastBox.classList.remove('show'), duration);
 }
 /* تعبئة وتنسيق قائمة الأقسام عمودياً مع المفضلة والبحث */
+const COMPLETED_KEY = 'adhkarCompletedLog'; // { catId: { count: n, lastDate: 'YYYY-MM-DD' } }
+function getCompletedLog(){ try{ return JSON.parse(localStorage.getItem(COMPLETED_KEY) || '{}'); }catch(e){ return {}; } }
+
 function renderCategoriesList() {
   const listContainer = document.getElementById('categoriesList');
   const data = (typeof azkarCategories !== 'undefined') ? azkarCategories : (typeof adhkarDatabase !== 'undefined' ? adhkarDatabase : []);
@@ -34,6 +40,8 @@ function renderCategoriesList() {
   listContainer.innerHTML = '';
 
   const savedFavs = JSON.parse(localStorage.getItem('adhkarFavorites') || '{}');
+  const log = getCompletedLog();
+  const today = new Date().toISOString().slice(0,10);
   let items = Array.isArray(data) ? [...data] : Object.keys(data).map(k => ({ id: k, ...data[k] }));
 
   // ترتيب العناصر: المفضلة تظهر أولاً
@@ -41,15 +49,58 @@ function renderCategoriesList() {
 
   items.forEach(cat => {
       let isFav = !!savedFavs[cat.id];
+      const done = log[cat.id];
+      const doneToday = done && done.lastDate === today;
       let card = document.createElement('div');
       card.className = 'islamic-category-card';
       card.innerHTML = `
-          <span onclick="renderCategory('${cat.id}')" style="flex:1; font-weight:bold;">${cat.emoji || ''} ${cat.name || cat.title}</span>
+          <span onclick="renderCategory('${cat.id}')" style="flex:1; font-weight:bold;">
+            ${cat.emoji || ''} ${cat.name || cat.title}
+            ${doneToday ? '<span class="done-today-badge" title="اتقرت النهاردة">✅</span>' : ''}
+          </span>
           <button class="star-btn ${isFav ? 'fav-active' : ''}" onclick="toggleFavorite('${cat.id}', event)">★</button>
       `;
       listContainer.appendChild(card);
   });
+  renderStreak();
 }
+
+/* ---------------- متتالية الأذكار (كام يوم متتالي فيه إكمال قسم واحد على الأقل) ---------------- */
+function renderStreak(){
+  const el = document.getElementById('azkarStreak');
+  if(!el) return;
+  const log = getCompletedLog();
+  const dates = new Set(Object.values(log).map(v=> v.lastDate).filter(Boolean));
+  let streak = 0;
+  let d = new Date();
+  while(true){
+    const k = d.toISOString().slice(0,10);
+    if(dates.has(k)){ streak++; d.setDate(d.getDate()-1); }
+    else break;
+  }
+  el.textContent = '🔥 متتالية: ' + streak + ' يوم';
+}
+
+function markCategoryCompleted(catId){
+  const log = getCompletedLog();
+  const today = new Date().toISOString().slice(0,10);
+  const prev = log[catId] || { count: 0, lastDate: null };
+  log[catId] = { count: prev.count + 1, lastDate: today };
+  localStorage.setItem(COMPLETED_KEY, JSON.stringify(log));
+  renderStreak();
+}
+
+/* ---------------- قسم عشوائي ---------------- */
+safe(()=>{
+  const btn = document.getElementById('randomCategoryBtn');
+  btn?.addEventListener('click', ()=>{
+    const data = (typeof azkarCategories !== 'undefined') ? azkarCategories : (typeof adhkarDatabase !== 'undefined' ? adhkarDatabase : []);
+    const items = Array.isArray(data) ? data : Object.keys(data).map(k => ({ id: k, ...data[k] }));
+    if(!items.length) return;
+    const pick = items[Math.floor(Math.random() * items.length)];
+    renderCategory(pick.id);
+  });
+}, 'قسم عشوائي');
 
 function toggleFavorite(id, event) {
   if (event) event.stopPropagation();
@@ -81,6 +132,7 @@ safe(() => {
    ========================================================= */
    let currentCategoryItems = [];
    let currentCategoryTitle = '';
+   let currentCategoryId = null;
    let currentDhikrIndex = 0;
    let currentRemainingCount = 1;
    let currentInitialCount = 1;
@@ -93,6 +145,7 @@ safe(() => {
        
        currentCategoryItems = cat.items || [];
        currentCategoryTitle = cat.name || cat.title || '';
+       currentCategoryId = catId;
        currentDhikrIndex = 0;
        
        if (currentCategoryItems.length === 0) return;
@@ -113,6 +166,7 @@ safe(() => {
    }
    
    function closeAdhkarCategory() {
+       if (typeof stopAutoMode === 'function') stopAutoMode();
        const detailEl = document.getElementById('dhkarDetailView');
        if (detailEl) detailEl.style.display = 'none';
    
@@ -181,6 +235,8 @@ safe(() => {
            } else {
                alert('أتممت كل أذكار هذا القسم، تقبل الله منك 🌟');
            }
+           if (typeof markCategoryCompleted === 'function' && currentCategoryId) markCategoryCompleted(currentCategoryId);
+           stopAutoMode();
            closeAdhkarCategory();
        }
    }
@@ -242,3 +298,69 @@ window.removeDua = function(index) {
     localStorage.setItem('my_saved_duas', JSON.stringify(savedDuas));
     displayDuas();
 };
+
+/* ---------------- رسالة تأكيد لو حاول يخرج وهو لسه في نص قسم أذكار ما خلصهوش ---------------- */
+window.addEventListener('beforeunload', (e)=>{
+  const detailEl = document.getElementById('dhkarDetailView');
+  const inProgress = detailEl && detailEl.style.display !== 'none' && currentCategoryItems.length > 0;
+  if(inProgress){
+    e.preventDefault();
+    e.returnValue = 'لسه في نص أذكار ما خلصتهاش، عايز فعلاً تخرج؟';
+    return e.returnValue;
+  }
+});
+safe(()=>{
+  const FONT_KEY = 'azkarFontSize';
+  let size = parseFloat(localStorage.getItem(FONT_KEY) || '1.4');
+  function applyFont(){
+    document.documentElement.style.setProperty('--azkar-font-size', size + 'rem');
+    localStorage.setItem(FONT_KEY, size);
+  }
+  applyFont();
+  document.getElementById('fontIncBtn')?.addEventListener('click', ()=>{
+    size = Math.min(2.4, size + 0.15); applyFont();
+  });
+  document.getElementById('fontDecBtn')?.addEventListener('click', ()=>{
+    size = Math.max(1.0, size - 0.15); applyFont();
+  });
+}, 'حجم خط الذكر');
+
+/* ---------------- نسخ ومشاركة الذكر الحالي ---------------- */
+safe(()=>{
+  document.getElementById('copyDhikrBtn')?.addEventListener('click', ()=>{
+    const text = document.getElementById('currentDhikrText')?.innerText || '';
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(()=> showToast('✅ تم نسخ الذكر')).catch(()=>{});
+    }
+  });
+  document.getElementById('shareDhikrBtn')?.addEventListener('click', ()=>{
+    const text = document.getElementById('currentDhikrText')?.innerText || '';
+    if(navigator.share){ navigator.share({ text }); }
+    else { window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank'); }
+  });
+}, 'نسخ ومشاركة الذكر');
+
+/* ---------------- الوضع التلقائي: يتابع الذكر لوحده كل فترة ---------------- */
+let autoModeActive = false;
+let autoModeTimer = null;
+function stopAutoMode(){
+  autoModeActive = false;
+  clearInterval(autoModeTimer);
+  autoModeTimer = null;
+  const btn = document.getElementById('autoModeBtn');
+  btn?.classList.remove('active');
+  if(btn) btn.textContent = '⏱️ تلقائي';
+}
+safe(()=>{
+  const btn = document.getElementById('autoModeBtn');
+  btn?.addEventListener('click', ()=>{
+    if(autoModeActive){ stopAutoMode(); return; }
+    autoModeActive = true;
+    btn.classList.add('active');
+    btn.textContent = '⏸️ إيقاف';
+    autoModeTimer = setInterval(()=>{
+      if(!autoModeActive) return;
+      handleDhikrTouch();
+    }, 2600);
+  });
+}, 'الوضع التلقائي');

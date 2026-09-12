@@ -15,7 +15,10 @@ safe(()=>{
 }, 'الوضع الليلي');
 
 const audioClick = $('audioClick');
-function playClick(){ try{ audioClick.currentTime = 0; audioClick.play().catch(()=>{}); }catch(e){} }
+function playClick(){
+  if(window.siteSettings && !window.siteSettings.soundEnabled()) return;
+  try{ audioClick.currentTime = 0; audioClick.play().catch(()=>{}); }catch(e){}
+}
 document.addEventListener('click', (e)=>{ if(e.target.closest('button,a')) playClick(); });
 
 const toastBox = $('toastBox');
@@ -27,5 +30,25 @@ function showToast(msg, duration=4000){
 }
 
 safe(()=>{
-  $('contactForm').addEventListener('submit', ()=> showToast('جاري إرسال رسالتك... 🤍'));
+  const form = $('contactForm');
+  let formSubmitted = false;
+  form.addEventListener('submit', ()=>{
+    formSubmitted = true;
+    showToast('جاري إرسال رسالتك... 🤍');
+  });
+
+  /* ---------------- رسالة تأكيد لو حاول يخرج وهو لسه كاتب رسالة ما بعتهاش ---------------- */
+  function hasUnsavedInput(){
+    return !formSubmitted && (
+      $('nameInput').value.trim() !== '' ||
+      $('messageInput').value.trim() !== ''
+    );
+  }
+  window.addEventListener('beforeunload', (e)=>{
+    if(hasUnsavedInput()){
+      e.preventDefault();
+      e.returnValue = 'لسه كاتب رسالة ومبعتهاش، عايز فعلاً تخرج؟';
+      return e.returnValue;
+    }
+  });
 }, 'فورم التواصل');

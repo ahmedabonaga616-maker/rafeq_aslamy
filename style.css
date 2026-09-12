@@ -72,7 +72,39 @@ body{
   transition: background .5s ease, color .5s ease;
   min-height:100vh;
   padding-bottom: 40px;
+  position: relative;
 }
+
+/* =============== زخرفة إسلامية هادئة في الخلفية =============== */
+/* الشكل قابل للتغيير من "إعدادات الموقع" (40 شكل)، وبيتحدد عبر متغيّرات CSS
+   بيظبطها settings-core.js على وسم <html>. القيمة هنا افتراضية (fallback)
+   تشتغل حتى لو الجافاسكريبت متأخر أو متعطّل. */
+body::before{
+  content:'';
+  position: fixed; inset:0; z-index:-1; pointer-events:none;
+  background-image: var(--decor-image, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110' viewBox='0 0 110 110'%3E%3Cg fill='none' stroke='%23c9a24b' stroke-width='1'%3E%3Crect x='20' y='20' width='70' height='70'/%3E%3Crect x='20' y='20' width='70' height='70' transform='rotate(45 55 55)'/%3E%3Ccircle cx='55' cy='55' r='3' fill='%23c9a24b' stroke='none'/%3E%3C/g%3E%3C/svg%3E"));
+  background-size: var(--decor-size, 165px) var(--decor-size, 165px);
+  opacity: .05;
+}
+[data-theme="light"] body::before{ opacity:.07; }
+
+/* =============== حجم الخط العام (من إعدادات الموقع) =============== */
+html{ font-size: calc(16px * var(--font-scale, 1)); }
+
+/* =============== تعطيل الحركات والانتقالات (من إعدادات الموقع) =============== */
+html[data-reduce-motion="1"] *,
+html[data-reduce-motion="1"] *::before,
+html[data-reduce-motion="1"] *::after{
+  animation-duration: .001s !important;
+  animation-delay: 0s !important;
+  transition-duration: .001s !important;
+  scroll-behavior: auto !important;
+}
+
+/* =============== اللون المميز للموقع (accent) =============== */
+/* اللون بقى بيتظبط مباشرة بجافاسكريبت (settings-core.js) على --gold/--gold-bright
+   عشان يدعم أي عدد ألوان (من اللوحة الموسّعة أو لون مخصوص من صاحب الجهاز)،
+   مفيش داعي لقواعد ثابتة هنا بعد كده. */
 
 a{ color:inherit; text-decoration:none; }
 ul{ list-style:none; }
@@ -180,12 +212,23 @@ img{ max-width:100%; display:block; }
 .verse-source{ margin-top:14px; color: var(--gold); font-size:.85rem; font-weight:700; }
 .verse-actions{ display:flex; gap:10px; justify-content:center; margin-top:16px; }
 .icon-btn{
+  position:relative; overflow:hidden;
   width:38px; height:38px; border-radius:50%;
   background: var(--surface-2); border:1px solid var(--border);
   display:flex; align-items:center; justify-content:center;
-  transition: transform .2s ease, background .2s ease; font-size:.95rem;
+  transition: transform .2s cubic-bezier(.34,1.56,.64,1), background .2s ease; font-size:.95rem;
 }
-.icon-btn:hover{ transform: translateY(-2px); background: color-mix(in srgb, var(--gold) 18%, var(--surface-2)); }
+.icon-btn:hover{ transform: translateY(-2px) scale(1.08); background: color-mix(in srgb, var(--gold) 18%, var(--surface-2)); box-shadow: 0 0 14px 2px color-mix(in srgb, var(--gold) 45%, transparent); }
+.icon-btn:active{ transform: scale(.9); }
+
+/* =============== تأثير الموجة (Ripple) على كل الأزرار والكروت =============== */
+.ripple{
+  position:absolute; border-radius:50%; transform:scale(0);
+  background: rgba(255,255,255,.45); pointer-events:none;
+  animation: ripple-anim .55s ease-out forwards;
+}
+[data-theme="light"] .ripple{ background: rgba(0,0,0,.15); }
+@keyframes ripple-anim{ to{ transform:scale(2.6); opacity:0; } }
 
 /* =============== Prayer Times Section =============== */
 .prayer-section{ padding: 34px 0; }
@@ -194,12 +237,75 @@ img{ max-width:100%; display:block; }
   margin-bottom: 18px;
 }
 .location-controls{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+/* =============== لمعة ذهبية متحركة للأزرار =============== */
+/* -------- مودال الترحيب أول زيارة -------- */
+.welcome-modal{
+  position: fixed; inset:0; background: rgba(0,0,0,.65); display:none;
+  align-items:center; justify-content:center; z-index: 500; padding:20px;
+}
+.welcome-modal.show{ display:flex; }
+.welcome-modal-content{
+  background: var(--surface); border:1px solid var(--gold); border-radius: var(--radius);
+  padding: 30px; max-width: 440px; width:100%; text-align:center; box-shadow: var(--shadow);
+  animation: welcomePop .35s cubic-bezier(.34,1.56,.64,1);
+  position: relative;
+}
+.welcome-close-x{
+  position:absolute; top:10px; left:14px; background:none; border:none;
+  color: var(--text-dim); font-size:1.1rem; cursor:pointer; padding:4px 8px;
+  transition: color .2s ease, transform .2s ease;
+}
+.welcome-close-x:hover{ color: var(--gold-bright); transform: scale(1.15); }
+@keyframes welcomePop{ from{ transform: scale(.85); opacity:0; } to{ transform: scale(1); opacity:1; } }
+.welcome-emoji{ font-size:2.4rem; margin-bottom:10px; }
+.welcome-modal-content h2{ font-family: var(--font-display); color: var(--gold-bright); font-size:1.5rem; margin-bottom:14px; }
+.welcome-modal-content p{ color: var(--text-dim); line-height:1.9; margin-bottom:14px; font-size:.92rem; }
+.welcome-actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:8px; }
+
+@keyframes btnShine{
+  0%{ background-position: 200% 0; }
+  100%{ background-position: -200% 0; }
+}
 .btn{
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn::before{
+  content:'';
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+  background: linear-gradient(100deg,
+      transparent 20%,
+      color-mix(in srgb, var(--gold-bright) 65%, #fff 35%) 50%,
+      transparent 80%);
+  background-size: 220% 100%;
+  opacity:0;
+  transition: opacity .25s ease;
+}
+.btn:hover::before, .btn:focus-visible::before{
+  opacity:.55;
+  animation: btnShine 1.1s linear infinite;
+}
+.btn.primary{
+  background-image: linear-gradient(135deg, var(--gold) 0%, var(--gold-bright) 50%, var(--gold) 100%);
+  background-size: 220% 220%;
+  box-shadow: var(--shadow), 0 0 14px 0 color-mix(in srgb, var(--gold) 40%, transparent);
+  animation: btnGoldGlow 3.2s ease-in-out infinite;
+}
+@keyframes btnGoldGlow{
+  0%, 100%{ background-position: 0% 50%; }
+  50%{ background-position: 100% 50%; }
+}
+.btn{
+  position:relative; overflow:hidden;
   padding:10px 18px; border-radius: 30px; font-weight:700; font-size:.85rem;
   border:1px solid var(--border); background: var(--surface-2); color: var(--text);
-  display:inline-flex; align-items:center; gap:8px; transition: all .25s ease;
+  display:inline-flex; align-items:center; gap:8px;
+  transition: background .25s ease, color .25s ease, border-color .25s ease, transform .15s ease, box-shadow .25s ease;
 }
-.btn:hover{ background: var(--gold); color:#171203; border-color: var(--gold); }
+.btn:hover{ background: var(--gold); color:#171203; border-color: var(--gold); transform: translateY(-2px); box-shadow: var(--shadow), 0 0 16px 1px color-mix(in srgb, var(--gold) 55%, transparent); }
+.btn:active{ transform: translateY(0) scale(.96); }
+.btn:focus-visible{ box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold-bright) 45%, transparent); }
 .btn.primary{ background: var(--gold); color:#171203; }
 .btn.primary:hover{ background: var(--gold-bright); }
 .btn.small{ padding:7px 12px; font-size:.75rem; }
@@ -233,16 +339,20 @@ img{ max-width:100%; display:block; }
 .next-prayer-card{ background: linear-gradient(160deg, color-mix(in srgb, var(--gold) 18%, var(--surface)), var(--surface)); }
 .countdown{ font-family: var(--font-display); font-size: 2.4rem; color: var(--gold-bright); letter-spacing: 1px; }
 
-/* -------- مواقيت الصلاة: تفضل صف واحد زي الشاشة الكبيرة، وتتحول لسحب أفقي على الموبايل بدل ما تترتب عمودين -------- */
+/* -------- مواقيت الصلاة: صف واحد على الشاشة الكبيرة، و3 أعمدة (صفين) على الموبايل عشان تتعرض كلها من غير ما تحتاج تسحب -------- */
 .times-grid{
   display:grid; grid-template-columns: repeat(6, 1fr); gap:10px;
 }
 @media (max-width: 700px){
   .times-grid{
-    display:flex; overflow-x:auto; gap:8px; padding-bottom:6px;
-    -webkit-overflow-scrolling: touch; scrollbar-width: thin;
+    grid-template-columns: repeat(3, 1fr);
+    gap:8px;
   }
-  .times-grid .time-cell{ min-width: 82px; flex-shrink:0; }
+}
+@media (max-width: 380px){
+  .time-cell{ padding: 10px 4px; }
+  .time-cell .p-name{ font-size:.72rem; }
+  .time-cell .p-time{ font-size:.95rem; }
 }
 .time-cell{
   background: var(--surface); border:1px solid var(--border); border-radius: 14px;
@@ -253,7 +363,7 @@ img{ max-width:100%; display:block; }
   transform: translateY(-3px); box-shadow: var(--shadow);
 }
 .time-cell .p-name{ font-size:.85rem; font-weight:700; }
-.time-cell .p-time{ font-family: var(--font-display); font-size:1.15rem; margin-top:4px; }
+.time-cell .p-time{ font-family: var(--font-display); font-size:1.15rem; margin-top:4px; white-space:nowrap; }
 
 /* =============== Daily progress bar =============== */
 .progress-section{ margin-top:22px; }
@@ -268,7 +378,8 @@ img{ max-width:100%; display:block; }
 .progress-step.done{ background: linear-gradient(135deg, var(--green), var(--green-bright)); color:#fff; }
 
 /* =============== Weekly table =============== */
-.weekly-toggle{ text-align:center; margin-top:18px; }
+.weekly-toggle{ text-align:center; margin-top:18px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+
 .weekly-table-wrap{ overflow-x:auto; margin-top:14px; display:none; }
 .weekly-table-wrap.open{ display:block; }
 table.weekly{ width:100%; border-collapse: collapse; background: var(--surface); border-radius: var(--radius); overflow:hidden; }
@@ -307,7 +418,7 @@ table.weekly th{ background: var(--surface-2); color: var(--gold-bright); }
 }
 .dnd-row{ display:flex; align-items:center; justify-content:space-between; }
 .switch{ position:relative; width:46px; height:26px; border-radius:20px; background:var(--surface-2); border:1px solid var(--border); }
-.switch .dot{ position:absolute; top:2px; right:2px; width:20px; height:20px; border-radius:50%; background:var(--gold); transition: transform .3s ease; }
+.switch .dot{ position:absolute; top:2px; right:2px; width:20px; height:20px; border-radius:50%; background:var(--danger); transition: transform .3s ease; }
 .switch.active .dot{ transform: translateX(-20px); background:var(--green-bright); }
 
 /* =============== Why this site =============== */
@@ -327,7 +438,10 @@ table.weekly th{ background: var(--surface-2); color: var(--gold-bright); }
   background: var(--surface); border:1px solid var(--border); border-radius: var(--radius);
   padding: 22px 12px; text-align:center; transition: all .3s ease;
 }
-.nav-card:hover{ transform: translateY(-5px); border-color: var(--gold); box-shadow: var(--shadow); }
+.nav-card{ transition: transform .3s cubic-bezier(.34,1.56,.64,1), border-color .3s ease, box-shadow .3s ease; animation: card-in .5s ease backwards; }
+.nav-card:hover{ transform: translateY(-6px) scale(1.02); border-color: var(--gold); box-shadow: var(--shadow); }
+.nav-card:active{ transform: translateY(-2px) scale(.98); }
+@keyframes card-in{ from{ opacity:0; transform: translateY(14px);} to{ opacity:1; transform:translateY(0);} }
 .nav-card .emoji{ font-size:1.8rem; margin-bottom:8px; }
 .nav-card .title{ font-weight:700; color: var(--gold-bright); }
 
@@ -363,18 +477,6 @@ table.weekly th{ background: var(--surface-2); color: var(--gold-bright); }
 }
 .eid-banner.show, .ramadan-banner.show{ display:block; }
 .ramadan-times{ margin-top:8px; font-size:.85rem; color: var(--text-dim); font-weight:400; }
-
-.qibla-card{ background: var(--surface); border:1px solid var(--border); border-radius: var(--radius); padding: 24px; text-align:center; box-shadow: var(--shadow); }
-.qibla-compass{ margin-top:20px; }
-.qibla-compass.hidden{ display:none; }
-.compass-circle{
-  width: 180px; height: 180px; border-radius: 50%; margin: 0 auto;
-  border: 3px solid var(--gold); position:relative; background: var(--surface-2);
-  display:flex; align-items:center; justify-content:center;
-}
-.compass-needle{ font-size: 2rem; position:absolute; top:8px; transition: transform .3s ease; }
-#qiblaDegree{ margin-top:14px; font-family: var(--font-display); font-size:1.3rem; color: var(--gold-bright); }
-.qibla-note{ font-size:.78rem; color: var(--text-dim); margin-top:8px; max-width:320px; margin-inline:auto; }
 
 .saved-cities{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
 .saved-city-chip{

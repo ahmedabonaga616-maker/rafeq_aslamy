@@ -1,32 +1,38 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-66PQ408633"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-66PQ408633');
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="pageTitle">الرفيق للعبادات</title>
-<link rel="icon" href="images/alrafeq.jpeg"
+<link rel="icon" href="images/alrafeq.jpeg">
 <meta name="description" content="موقع إسلامي شامل: مواقيت الصلاة حسب موقعك، سبحة إلكترونية، أذكار، أسماء الله الحسنى، وآيات يومية في مكان واحد.">
-<meta name="keywords" content="ازكار , سبحة الكترونية, رفيق الاسلامي, رفيق للعبادات">
 <meta name="author" content="Ahmed">
 <link rel="manifest" href="manifest.json?v=5">
 <meta name="theme-color" content="#c9a24b">
 <link rel="stylesheet" href="style.css?v=5">
+<script src="settings-core.js?v=1"></script>
 <!--
   هذا الموقع من إنشاء وتصميم: أحمد (Ahmed)
   جميع الحقوق محفوظة © 2026 - يُمنع نسخ أو إعادة نشر هذا الموقع دون إذن صاحبه
 -->
-  <meta name="google-site-verification" content="Eki-u81I8eUBsj-ojE4woTypHLMoVRRAi8y-f43pErY" />
+<meta name="google-site-verification" content="Eki-u81I8eUBsj-ojE4woTypHLMoVRRAi8y-f43pErY" />
 </head>
 <body data-theme="dark">
+
+<div class="welcome-modal" id="welcomeModal">
+  <div class="welcome-modal-content">
+    <button class="welcome-close-x" id="welcomeCloseX" aria-label="إغلاق">✕</button>
+    <div class="welcome-emoji">🤍</div>
+    <h2>أهلًا بيك في الموقع</h2>
+    <p>حِبّ الخير لغيرك زي ما حبيته لنفسك، وانشر الموقع لأي حد ممكن يستفاد بيه — ولك مثل أجره إن شاء الله.</p>
+    <p>ولو واجهتك أي مشكلة، أو عندك اقتراح تحب تضيفه، تقدر تبعتلنا من قسم "الشكاوى والاقتراحات".</p>
+    <div class="welcome-actions">
+      <button class="btn primary" id="welcomeShareBtn">📤 شارك الموقع</button>
+      <a class="btn" href="contact.html">✉️ الشكاوى والاقتراحات</a>
+    </div>
+    <button class="btn small" id="welcomeCloseBtn" style="margin-top:14px;">تمام، يلا نبدأ</button>
+  </div>
+</div>
 
 <header class="site-header">
   <div class="header-inner">
@@ -136,6 +142,7 @@
 
   <div class="weekly-toggle">
     <button class="btn small" id="weeklyToggleBtn">📅 عرض مواقيت الأسبوع</button>
+    <button class="btn small" id="copyTimesBtn">📋 نسخ مواقيت اليوم</button>
   </div>
   <div class="weekly-table-wrap" id="weeklyTableWrap">
     <table class="weekly" id="weeklyTable">
@@ -179,11 +186,14 @@
 <section class="container" style="margin-top:30px;">
   <div class="section-title">🧭 أقسام الموقع</div>
   <div class="nav-cards">
+    <a class="nav-card" href="quran.html"><div class="emoji">📖</div><div class="title">المصحف الشريف</div></a>
     <a class="nav-card" href="tasbih.html"><div class="emoji">📿</div><div class="title">السبحة الإلكترونية</div></a>
     <a class="nav-card" href="azkar.html"><div class="emoji">📖</div><div class="title">الأذكار</div></a>
     <a class="nav-card" href="asma.html"><div class="emoji">✨</div><div class="title">أسماء الله الحسنى</div></a>
     <a class="nav-card" href="contact.html"><div class="emoji">✉️</div><div class="title">شكاوى واقتراحات</div></a>
-    <a class="nav-card" href="tools.html"><div class="emoji">🛠️</div><div class="title">الادوات</div></a> 
+    <a class="nav-card" href="tools.html"><div class="emoji">🛠️</div><div class="title">الادوات</div></a>
+    <a class="nav-card" href="favorites.html"><div class="emoji">⭐</div><div class="title">الآيات المفضلة</div></a>
+    <a class="nav-card" href="settings.html"><div class="emoji">⚙️</div><div class="title">إعدادات الموقع</div></a>
   </div>
 </section>
 
@@ -195,10 +205,13 @@
 
 <footer class="site-footer container">
   <div class="footer-links">
+    <a href="quran.html">المصحف الشريف</a>
     <a href="tasbih.html">السبحة</a>
     <a href="azkar.html">الأذكار</a>
     <a href="asma.html">أسماء الله الحسنى</a>
     <a href="contact.html">تواصل معنا</a>
+    <a href="favorites.html">المفضلة</a>
+    <a href="settings.html">إعدادات الموقع</a>
   </div>
   <p>جميع الحقوق محفوظة - شارك الخير 🤍</p>
 </footer>
