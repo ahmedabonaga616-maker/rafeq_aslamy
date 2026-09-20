@@ -44,6 +44,7 @@ function renderPreview(){
   window.siteSettings.preview({
     decorShape: pending.decorShape,
     decorHex: pending.decorHex,
+    decorOpacity: pending.decorOpacity,
     accentHex: pending.accentHex
   });
   previewBar?.classList.toggle('hidden', !hasPending());
@@ -56,6 +57,7 @@ function refreshAllSwatchRenders(){
 previewBar?.querySelector('#confirmPreviewBtn')?.addEventListener('click', ()=>{
   if(pending.decorShape) window.siteSettings.set('site-decor-shape', String(pending.decorShape));
   if(pending.decorHex) window.siteSettings.set('site-decor-color', pending.decorHex);
+  if(pending.decorOpacity) window.siteSettings.set('site-decor-opacity', pending.decorOpacity);
   if(pending.accentHex){
     window.siteSettings.set('site-accent', pending.accentId || 'custom');
     window.siteSettings.set('site-accent-hex', pending.accentHex);
@@ -150,6 +152,15 @@ safe(()=>{
       pending.decorHex = picker.value.replace('#','');
       renderPreview();
       renderShapes(); renderColors();
+    });
+  }
+
+  const intensity = $('decorIntensityRange');
+  if(intensity){
+    intensity.value = window.siteSettings.get('site-decor-opacity', '0.12');
+    intensity.addEventListener('input', ()=>{
+      pending.decorOpacity = intensity.value;
+      renderPreview();
     });
   }
 }, 'شبكة الزخارف');
@@ -254,6 +265,48 @@ safe(()=>{
   });
 }, 'مفتاح الصوت');
 
+/* ---------------- اختيار صوت الأذان مع الاستماع قبل الاختيار ---------------- */
+function playChimeTone(variant){
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = ctx.currentTime;
+    const freqs = variant === 'chime1' ? [660, 880, 990] : [523.25, 440, 523.25];
+    freqs.forEach((freq,i)=>{
+      const osc = ctx.createOscillator(), gain = ctx.createGain();
+      osc.type = 'sine'; osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, now+i*0.35);
+      gain.gain.linearRampToValueAtTime(0.2, now+i*0.35+0.03);
+      gain.gain.exponentialRampToValueAtTime(0.001, now+i*0.35+0.8);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(now+i*0.35); osc.stop(now+i*0.35+0.85);
+    });
+  }catch(e){}
+}
+safe(()=>{
+  const options = document.querySelectorAll('.athan-option');
+  const saved = localStorage.getItem('site-athan-sound') || 'azan';
+  options.forEach(opt=>{
+    const radio = opt.querySelector('input[type="radio"]');
+    if(opt.dataset.value === saved){ radio.checked = true; opt.classList.add('selected'); }
+    radio.addEventListener('change', ()=>{
+      options.forEach(o=> o.classList.remove('selected'));
+      opt.classList.add('selected');
+      localStorage.setItem('site-athan-sound', opt.dataset.value);
+      showToast('✅ اتحفظ اختيارك لصوت الأذان');
+    });
+    opt.addEventListener('click', (e)=>{ if(e.target.tagName !== 'BUTTON') radio.click(); });
+  });
+  document.querySelectorAll('[data-preview]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const v = btn.dataset.preview;
+      if(v === 'azan'){ const a = new Audio('audio/azan.mp3'); a.play().catch(()=>{}); }
+      else if(v === 'silent'){ showToast('🔕 مفيش صوت في الخيار ده'); }
+      else{ playChimeTone(v); }
+    });
+  });
+}, 'اختيار صوت الأذان');
+
 /* ---------------- استعادة الإعدادات الافتراضية ---------------- */
 $('resetSettingsBtn')?.addEventListener('click', ()=>{
   window.siteSettings.reset();
@@ -277,8 +330,11 @@ $('randomDecorBtn')?.addEventListener('click', ()=>{
 /* ---------------- نسخة احتياطية كاملة (إعدادات + مفضلة) ---------------- */
 const BACKUP_KEYS = [
   'site-theme','site-decoration','site-decor-shape','site-decor-color',
-  'site-reduce-motion','site-font-scale','site-accent','site-accent-hex','site-sound',
-  'quran-favorite-ayat','quran-last-reciter'
+  'site-reduce-motion','site-font-scale','site-accent','site-accent-hex','site-sound','site-athan-sound',
+  'quran-favorite-ayat','quran-last-reciter',
+  'quran-completed-surahs','asma-memorized-names','asma-favorite-names',
+  'adhkarCompletedLog','adhkarFavorites','tasbihDailyStats','tasbihTotalAllTime',
+  'tasbihTarget','cert-name'
 ];
 $('backupAllBtn')?.addEventListener('click', ()=>{
   const data = {};

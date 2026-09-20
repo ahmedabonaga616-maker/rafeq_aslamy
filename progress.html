@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رحلتي | الموقع الإسلامي الشامل</title>
+<meta name="description" content="مستواك، شجرة حسناتك، وملخص نشاطك في التسبيح والأذكار والقرآن.">
+<link rel="stylesheet" href="tokens.css?v=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;900&display=swap">
+<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="progress.css?v=1">
+<script src="settings-core.js?v=1"></script>
+<script src="stats.js?v=1"></script>
+<script src="certificate.js?v=1"></script>
+</head>
+<body data-theme="dark" class="page-fade-init">
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-emblem">🌳</div>
+      <div><div class="brand-name">رحلتي</div></div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+      <span class="knob"><i id="themeIcon">🌙</i></span>
+    </button>
+  </div>
+</header>
+
+<div class="big-back-wrap">
+  <a href="index.html" class="big-back-btn">🏠 العودة للرئيسية</a>
+</div>
+
+<main class="container progress-wrap">
+
+  <section class="level-card">
+    <div class="level-icon" id="levelIcon">🌱</div>
+    <div class="level-name" id="levelName">بداية الطريق</div>
+    <div class="level-bar-wrap"><div class="level-bar" id="levelBar"></div></div>
+    <div class="level-sub" id="levelSub"></div>
+  </section>
+
+  <section class="tree-card">
+    <h2>🌳 شجرة حسناتك</h2>
+    <p class="progress-note">بتكبر شوية شوية كل ما تسبّح أو تذكر ربنا أو تقرا قرآن — استمرارك هو اللي بيكبّرها.</p>
+    <div id="treeSvgWrap"></div>
+  </section>
+
+  <section class="week-card">
+    <h2>📊 نشاطك في آخر 7 أيام (تسبيح)</h2>
+    <canvas id="weekChart" width="600" height="220"></canvas>
+    <div class="week-stats" id="weekStatsRow"></div>
+  </section>
+
+  <section class="share-card">
+    <h2>📤 شارك تقدمك</h2>
+    <p class="progress-note">صورة بسيطة بملخص نشاطك تقدر تبعتها لصحابك يشجعهم يبدأوا كمان.</p>
+    <button class="btn primary" id="shareProgressBtn">📤 إنشاء ومشاركة</button>
+  </section>
+
+  <section class="badges-card">
+    <h2>🎖️ شاراتك</h2>
+    <p class="progress-note">شارات بتتفتح تلقائي كل ما تحقق إنجاز جديد.</p>
+    <div class="badges-grid" id="badgesGrid"></div>
+  </section>
+
+  <section class="cert-card">
+    <h2>🏆 الشهادات والإنجازات</h2>
+    <p class="progress-note">اختار الإنجاز اللي حققته واطلب شهادتك، أو اعمل شهادة عامة لمناسبة تانية.</p>
+    <div class="achievements-grid" id="achievementsGrid"></div>
+  </section>
+
+</main>
+
+<div class="toast" id="toastBox"></div>
+<audio id="audioClick" src="audio/click.mp3" preload="auto"></audio>
+
+<script src="progress.js?v=1"></script>
+<script src="transitions.js?v=1"></script>
+</body>
+</html>

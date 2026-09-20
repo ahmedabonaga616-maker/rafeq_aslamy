@@ -1,0 +1,41 @@
+.worksheet-wrap{ padding-top:10px; padding-bottom:60px; }
+
+.ws-section{
+  background: var(--surface); border:1px solid var(--border); border-radius: var(--radius);
+  padding: 22px; margin-bottom:20px;
+}
+.source-tabs{ display:flex; gap:10px; margin-bottom:16px; }
+.pick-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(0,160px)); gap:10px; max-height:340px; overflow-y:auto; margin-top:12px; }
+.pick-item{
+  display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:10px;
+  background: var(--surface-2); border:1px solid var(--border); cursor:pointer; font-size:.85rem;
+}
+.pick-item.selected{ border-color: var(--gold); background: color-mix(in srgb, var(--gold) 16%, var(--surface-2)); }
+.pick-item input{ pointer-events:none; }
+.ws-actions{ display:flex; align-items:center; gap:14px; margin-top:16px; flex-wrap:wrap; }
+#surahSearchWs{ margin-bottom:4px; }
+
+/* -------- معاينة الورقة على الشاشة -------- */
+.worksheet-preview{
+  background:#fbf3e6; color:#2b1c0f; border:2px solid var(--gold); border-radius:16px;
+  padding: 30px; margin-top:10px;
+}
+.worksheet-preview:empty{ display:none; }
+.ws-header{ text-align:center; margin-bottom:24px; border-bottom:2px solid #c9a24b; padding-bottom:14px; }
+.ws-header .ws-title{ font-family: var(--font-display); font-size:1.6rem; color:#7a5a18; }
+.ws-header .ws-sub{ font-size:.8rem; color:#8a6d3c; margin-top:4px; }
+.ws-block{ margin-bottom:22px; page-break-inside: avoid; }
+.ws-block h3{ font-family: var(--font-display); color:#7a5a18; font-size:1.2rem; margin-bottom:10px; border-bottom:1px solid #c9a24b; padding-bottom:6px; }
+.ws-ayat{ font-family: var(--font-display); font-size:1.2rem; line-height:2.3; text-align:justify; text-align-last:center; }
+.ws-zekr-item{ font-size:1rem; line-height:2; margin-bottom:10px; white-space:pre-line; }
+.ws-zekr-item .rep{ color:#a6291a; font-weight:700; font-size:.85rem; }
+.ws-footer{ text-align:center; font-size:.75rem; color:#8a6d3c; margin-top:20px; }
+
+/* -------- إعدادات الطباعة -------- */
+@media print{
+  .no-print{ display:none !important; }
+  body{ background:#fff !important; }
+  .worksheet-preview{ border:none; padding:0; background:#fff; color:#000; }
+  .ws-header .ws-title, .ws-block h3{ color:#000 !important; }
+  .ws-zekr-item .rep{ color:#000 !important; }
+}

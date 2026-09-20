@@ -72,7 +72,37 @@
     { name:'محاريب مصغّرة', size:150, draw:c=>
       `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='120' viewBox='0 0 100 120'><g fill='none' stroke='%23${c}' stroke-width='1.1'><path d='M20 112 V60 a30 30 0 0 1 60 0 V112 Z'/><line x1='12' y1='112' x2='88' y2='112'/></g></svg>` },
     { name:'مشربية مثلثات', size:110, draw:c=>
-      `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='60' viewBox='0 0 100 60'><g fill='none' stroke='%23${c}' stroke-width='1'><path d='M0 50 L25 10 L50 50 L75 10 L100 50'/></g></svg>` }
+      `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='60' viewBox='0 0 100 60'><g fill='none' stroke='%23${c}' stroke-width='1'><path d='M0 50 L25 10 L50 50 L75 10 L100 50'/></g></svg>` },
+    { name:'نجمة سباعية', size:140, draw:c=>
+      `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><polygon points='50.0,4.0 59.5,30.2 86.0,21.3 71.4,45.1 94.8,60.2 67.2,63.7 70.0,91.4 50.0,72.0 30.0,91.4 32.8,63.7 5.2,60.2 28.6,45.1 14.0,21.3 40.5,30.2' fill='none' stroke='%23${c}' stroke-width='1.2'/></svg>` },
+    { name:'نجمة عشارية', size:150, draw:c=>
+      `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><polygon points='50.0,4.0 59.3,21.5 77.0,12.8 74.3,32.4 93.7,35.8 80.0,50.0 93.7,64.2 74.3,67.6 77.0,87.2 59.3,78.5 50.0,96.0 40.7,78.5 23.0,87.2 25.7,67.6 6.3,64.2 20.0,50.0 6.3,35.8 25.7,32.4 23.0,12.8 40.7,21.5' fill='none' stroke='%23${c}' stroke-width='1.1'/></svg>` },
+    { name:'نجمة اثنا عشرية', size:160, draw:c=>
+      `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><polygon points='50.0,4.0 58.8,17.2 73.0,10.2 74.0,26.0 89.8,27.0 82.8,41.2 96.0,50.0 82.8,58.8 89.8,73.0 74.0,74.0 73.0,89.8 58.8,82.8 50.0,96.0 41.2,82.8 27.0,89.8 26.0,74.0 10.2,73.0 17.2,58.8 4.0,50.0 17.2,41.2 10.2,27.0 26.0,26.0 27.0,10.2 41.2,17.2' fill='none' stroke='%23${c}' stroke-width='1'/></svg>` },
+    { name:'وريدة سداسية البتلات', size:130, draw:c=>
+      `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><g fill='none' stroke='%23${c}' stroke-width='1.2'><circle cx='50' cy='27' r='20'/><circle cx='70' cy='40' r='20'/><circle cx='70' cy='63' r='20'/><circle cx='50' cy='76' r='20'/><circle cx='30' cy='63' r='20'/><circle cx='30' cy='40' r='20'/></g></svg>` },
+    { name:'مثمّنات متشابكة', size:140, draw:c=>
+      `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><g fill='none' stroke='%23${c}' stroke-width='1.1'><polygon points='50,6 74,16 84,40 84,60 74,84 50,94 26,84 16,60 16,40 26,16'/></g></svg>` },
+    { name:'مربعات متدرجة', size:120, draw:c=>
+      `<svg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'><g fill='none' stroke='%23${c}' stroke-width='1'><rect x='38' y='2' width='14' height='14'/><rect x='2' y='38' width='14' height='14'/><rect x='74' y='38' width='14' height='14'/><rect x='38' y='74' width='14' height='14'/><rect x='38' y='38' width='14' height='14'/></g></svg>` },
+    { name:'شبكة معينات صغيرة', size:90, draw:c=>
+      `<svg xmlns='http://www.w3.org/2000/svg' width='70' height='70' viewBox='0 0 70 70'><g fill='none' stroke='%23${c}' stroke-width='1'><path d='M35 4 L66 35 L35 66 L4 35 Z'/></g></svg>` },
+    { name:'دوائر صغيرة متكررة', size:80, draw:c=>
+      `<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><circle cx='30' cy='30' r='16' fill='none' stroke='%23${c}' stroke-width='1.3'/></svg>` },
+    { name:'مروحة مقرنصة', size:130, draw:c=>
+      `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='60' viewBox='0 0 100 60'><g fill='none' stroke='%23${c}' stroke-width='1.1'><path d='M0 55 A50 50 0 0 1 100 55'/><path d='M15 55 A35 35 0 0 1 85 55'/><path d='M30 55 A20 20 0 0 1 70 55'/></g></svg>` },
+    { name:'خطوط متعرجة', size:100, draw:c=>
+      `<svg xmlns='http://www.w3.org/2000/svg' width='90' height='40' viewBox='0 0 90 40'><path d='M0 30 L15 10 L30 30 L45 10 L60 30 L75 10 L90 30' fill='none' stroke='%23${c}' stroke-width='1.3'/></svg>` },
+    { name:'نقاط بأقواس', size:110, draw:c=>
+      `<svg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'><g fill='none' stroke='%23${c}' stroke-width='1'><path d='M10 45 A35 35 0 0 1 80 45'/><path d='M10 45 A35 35 0 0 0 80 45'/><circle cx='45' cy='10' r='2.5' fill='%23${c}' stroke='none'/><circle cx='45' cy='80' r='2.5' fill='%23${c}' stroke='none'/></g></svg>` },
+    { name:'ضفيرة متقاطعة', size:100, draw:c=>
+      `<svg xmlns='http://www.w3.org/2000/svg' width='80' height='40' viewBox='0 0 80 40'><g fill='none' stroke='%23${c}' stroke-width='1.2'><path d='M0 20 C 20 0, 20 40, 40 20 C 60 0, 60 40, 80 20'/><path d='M0 20 C 20 40, 20 0, 40 20 C 60 40, 60 0, 80 20'/></g></svg>` },
+    { name:'مثلثات متقابلة', size:100, draw:c=>
+      `<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='none' stroke='%23${c}' stroke-width='1.1'><path d='M40 6 L74 40 L40 40 Z'/><path d='M40 74 L6 40 L40 40 Z'/></g></svg>` },
+    { name:'موجة مزدوجة', size:120, draw:c=>
+      `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='50' viewBox='0 0 100 50'><g fill='none' stroke='%23${c}' stroke-width='1.2'><path d='M0 15 Q 25 0, 50 15 T 100 15'/><path d='M0 35 Q 25 20, 50 35 T 100 35'/></g></svg>` },
+    { name:'نجيمات متكررة', size:90, draw:c=>
+      `<svg xmlns='http://www.w3.org/2000/svg' width='70' height='70' viewBox='0 0 70 70'><g fill='none' stroke='%23${c}' stroke-width='1.3'><path d='M35 22 V48 M22 35 H48 M27 27 L43 43 M43 27 L27 43'/></g></svg>` }
   ];
 
   /* شكل الزخرفة (1-8) ولونها (Hex) بقوا إعدادين منفصلين تمامًا.
@@ -135,6 +165,7 @@
       const d = buildDecorShape(shape, hex);
       root.style.setProperty('--decor-image', d.backgroundImage);
       root.style.setProperty('--decor-size', d.size + 'px');
+      root.style.setProperty('--decor-opacity', overrides.decorOpacity || ls('site-decor-opacity', '.12'));
     }catch(e){}
 
     root.setAttribute('data-reduce-motion', reduceMotion === '1' ? '1' : '0');
@@ -159,10 +190,33 @@
     preview(overrides){ applyAll(overrides); },
     currentDecorShape, currentDecorHex, currentAccentHex,
     reset(){
-      ['site-decoration','site-decor-shape','site-decor-color','site-reduce-motion','site-font-scale','site-accent','site-accent-hex','site-sound'].forEach(k=>{
+      ['site-decoration','site-decor-shape','site-decor-color','site-decor-opacity','site-reduce-motion','site-font-scale','site-accent','site-accent-hex','site-sound'].forEach(k=>{
         try{ localStorage.removeItem(k); }catch(e){}
       });
       applyAll();
     }
   };
 })();
+
+/* ===================================================================
+   تحديث تلقائي عند صدور نسخة جديدة من الموقع
+   المشكلة اللي كانت بتحصل: تنزل تحديث على السيرفر، لكن أي تبويب فاتحه
+   حد بالفعل بيفضل شغال بالملفات القديمة اللي كانت محمّلة في الذاكرة،
+   وميحسش إن فيه تحديث إلا لو قفل الموقع وفتحه تاني بنفسه. الكود ده
+   بيخلي أي تبويب مفتوح يعمل تحديث (reload) لوحده تلقائيًا أول ما
+   Service Worker بتاع النسخة الجديدة ياخد السيطرة.
+   ملحوظة: التبويبات اللي فاتحة وقت أول نشر لهذا الإصلاح نفسه لازم
+   يعملوا تحديث يدوي (مرة واحدة بس) عشان يبدأ الكود ده يشتغل عندهم؛
+   وبعد كده التحديثات الجاية هتوصلهم لوحدها.
+=================================================================== */
+try{
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', ()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', ()=>{
+      if(reloaded) return;
+      reloaded = true;
+      location.reload();
+    });
+  }
+}catch(e){}

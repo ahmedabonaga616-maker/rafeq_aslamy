@@ -9,6 +9,10 @@
 <meta name="author" content="Ahmed">
 <link rel="manifest" href="manifest.json?v=5">
 <meta name="theme-color" content="#c9a24b">
+<link rel="stylesheet" href="tokens.css?v=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;900&display=swap">
 <link rel="stylesheet" href="style.css?v=5">
 <script src="settings-core.js?v=1"></script>
 <!--
@@ -16,17 +20,8 @@
   جميع الحقوق محفوظة © 2026 - يُمنع نسخ أو إعادة نشر هذا الموقع دون إذن صاحبه
 -->
 <meta name="google-site-verification" content="Eki-u81I8eUBsj-ojE4woTypHLMoVRRAi8y-f43pErY" />
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-66PQ408633"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-66PQ408633');
-</script>
 </head>
-<body data-theme="dark">
+<body data-theme="dark" class="page-fade-init">
 
 <div class="welcome-modal" id="welcomeModal">
   <div class="welcome-modal-content">
@@ -57,6 +52,7 @@
         <b id="gregorianDate">--/--/----</b>
         <span id="hijriDate">-- -- ----هـ</span>
       </div>
+      <button class="btn small primary hidden" id="installAppBtn">📲 ثبّت التطبيق</button>
       <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
         <span class="knob"><i id="themeIcon">🌙</i></span>
       </button>
@@ -119,7 +115,13 @@
     </div>
     <div class="side-card next-prayer-card">
       <span class="label">الوقت المتبقي</span>
-      <span class="countdown" id="countdownDisplay">--:--:--</span>
+      <div class="countdown-ring-wrap">
+        <svg class="countdown-ring" viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+          <circle class="ring-fg" id="countdownRingFg" cx="60" cy="60" r="52"></circle>
+        </svg>
+        <span class="countdown" id="countdownDisplay">--:--:--</span>
+      </div>
       <span class="sub" id="dndSub">🔔 التنبيهات مفعّلة</span>
     </div>
     <div class="side-card">
@@ -155,7 +157,7 @@
   </div>
   <div class="weekly-table-wrap" id="weeklyTableWrap">
     <table class="weekly" id="weeklyTable">
-      <thead><tr><th>اليوم</th><th>الفجر</th><th>الظهر</th><th>العصر</th><th>المغرب</th><th>العشاء</th></tr></thead>
+      <thead><tr><th>اليوم</th><th class="col-fajr">الفجر</th><th class="col-dhuhr">الظهر</th><th class="col-asr">العصر</th><th class="col-maghrib">المغرب</th><th class="col-isha">العشاء</th></tr></thead>
       <tbody id="weeklyTableBody"></tbody>
     </table>
   </div>
@@ -191,7 +193,6 @@
   </div>
 </section>
 
-<!-- 5. أقسام الموقع -->
 <section class="container" style="margin-top:30px;">
   <div class="section-title">🧭 أقسام الموقع</div>
   <div class="nav-cards">
@@ -202,7 +203,8 @@
     <a class="nav-card" href="contact.html"><div class="emoji">✉️</div><div class="title">شكاوى واقتراحات</div></a>
     <a class="nav-card" href="tools.html"><div class="emoji">🛠️</div><div class="title">الادوات</div></a>
     <a class="nav-card" href="favorites.html"><div class="emoji">⭐</div><div class="title">الآيات المفضلة</div></a>
-    <a class="nav-card" href="settings.html"><div class="emoji">⚙️</div><div class="title">إعدادات الموقع</div></a>
+    <a class="nav-card" href="worksheet.html"><div class="emoji">🖨️</div><div class="title">ورقة عمل للطباعة</div></a>
+    <a class="nav-card" href="progress.html"><div class="emoji">🌳</div><div class="title">رحلتي</div></a>    <a class="nav-card" href="settings.html"><div class="emoji">⚙️</div><div class="title">إعدادات الموقع</div></a>
   </div>
 </section>
 
@@ -223,6 +225,7 @@
     <a href="settings.html">إعدادات الموقع</a>
   </div>
   <p>جميع الحقوق محفوظة - شارك الخير 🤍</p>
+  <p class="last-updated">🔄 آخر تحديث للموقع: سبتمبر 2026</p>
 </footer>
 
 <div class="copyright-footer container">
@@ -239,5 +242,6 @@
 <audio id="audioNearMaghrib" src="audio/maghrib_near.mp3" preload="auto"></audio>
 <audio id="audioNearIsha" src="audio/isha_near.mp3" preload="auto"></audio>
 <script src="script.js?v=5"></script>
+<script src="transitions.js?v=1"></script>
 </body>
 </html>

@@ -4,16 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>السبحة الإلكترونية | الموقع الإسلامي الشامل</title>
+<meta name="description" content="سبحة إلكترونية بعداد تفاعلي، إحصائيات يومية، ومتتالية الأيام.">
+<link rel="stylesheet" href="tokens.css?v=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;900&display=swap">
 <link rel="stylesheet" href="style.css?v=5">
 <script src="settings-core.js?v=1"></script>
 <link rel="stylesheet" href="tasbih.css?v=5">
 </head>
-<body data-theme="dark">
+<body data-theme="dark" class="page-fade-init">
 
 <header class="site-header">
   <div class="header-inner">
     <div class="brand">
-      <div class="brand-emblem">☾</div>
+      <div class="brand-emblem">📿</div>
       <div><div class="brand-name">السبحة الإلكترونية</div></div>
     </div>
     <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
@@ -30,6 +35,7 @@
   <div class="mode-switcher">
     <button class="mode-btn active" id="modernModeBtn">📿 سبحة حديثة</button>
     <button class="mode-btn" id="handModeBtn">🖐️ سبحة يد</button>
+    <button class="mode-btn" id="mode3dBtn">🔮 سبحة 3D</button>
   </div>
 
   <div class="dhikr-selector">
@@ -112,11 +118,26 @@
     <div class="designs-title">🎨 اختر شكل السبحة (20 تصميم)</div>
     <div class="designs-grid" id="designsGrid"></div>
   </section>
+
+  <section class="tasbih-view hidden" id="view3d">
+    <div class="dhikr-display" id="dhikrDisplay3d">سُبْحَانَ اللَّهِ</div>
+    <div class="bead-count-label"><span id="count3d">0</span> / <b id="target3d">33</b></div>
+    <div class="bead-scene-wrap">
+      <div class="bead-scene" id="beadScene"></div>
+    </div>
+    <p class="bead-hint">💡 دوس على الخرزة الكبيرة في النص عشان تسبّح</p>
+    <div class="tasbih-controls">
+      <button class="btn small" id="undo3dBtn">↶ تراجع</button>
+      <button class="btn small" id="reset3dBtn">↺ تصفير</button>
+      <span class="total-badge">الإجمالي: <b id="total3d">0</b></span>
+    </div>
+  </section>
 </main>
 
 <div class="toast" id="toastBox"></div>
 <audio id="audioClick" src="audio/click.mp3" preload="auto"></audio>
 
 <script src="tasbih.js?v=5"></script>
+<script src="transitions.js?v=1"></script>
 </body>
 </html>

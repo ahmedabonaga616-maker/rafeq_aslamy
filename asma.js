@@ -16,6 +16,7 @@ safe(()=>{
 
 const audioClick = $('audioClick');
 const audioAllah = $('audioAllah');
+let showFavOnly = false;
 function playClick(){
   if(window.siteSettings && !window.siteSettings.soundEnabled()) return;
   try{ audioClick.currentTime = 0; audioClick.play().catch(()=>{}); }catch(e){}
@@ -75,7 +76,6 @@ function renderProgress(){
 }
 renderProgress();
 
-let showFavOnly = false;
 function renderGrid(){
   document.querySelectorAll('.asma-card').forEach(card=>{
     const i = parseInt(card.dataset.idx, 10);
@@ -228,3 +228,80 @@ function showToastAsma(msg){
   clearTimeout(showToastAsma._t);
   showToastAsma._t = setTimeout(()=> box.classList.remove('show'), 2200);
 }
+
+/* ===================================================================
+   اختبار حفظ الأسماء الحسنى (اختيار من متعدد، تصحيح فوري)
+=================================================================== */
+safe(()=>{
+  const QUIZ_LEN = 10;
+  let quizQuestions = [], quizIndex = 0, quizScore = 0;
+  const modal = $('quizModal');
+  const content = $('quizModalContent');
+
+  function shuffleArr(arr){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+    return a;
+  }
+
+  function buildQuestions(){
+    const pool = shuffleArr(asmaAlHusna.map((n,i)=>({...n, idx:i})));
+    return pool.slice(0, QUIZ_LEN).map(correct=>{
+      const wrongs = shuffleArr(asmaAlHusna.filter(n=> n.name !== correct.name)).slice(0,3);
+      const options = shuffleArr([correct, ...wrongs]);
+      return { question: correct.name, correctMeaning: correct.meaning, options: options.map(o=>o.meaning) };
+    });
+  }
+
+  function renderQuestion(){
+    if(quizIndex >= quizQuestions.length){ renderResult(); return; }
+    const q = quizQuestions[quizIndex];
+    content.innerHTML = `
+      <div class="quiz-progress">سؤال ${quizIndex+1} من ${quizQuestions.length}</div>
+      <div class="quiz-question">إيه معنى اسم "${q.question}"؟</div>
+      <div id="quizOptions"></div>`;
+    const optsEl = document.createElement('div');
+    q.options.forEach(opt=>{
+      const btn = document.createElement('button');
+      btn.className = 'quiz-option';
+      btn.textContent = opt;
+      btn.addEventListener('click', ()=>{
+        document.querySelectorAll('.quiz-option').forEach(b=> b.disabled = true);
+        if(opt === q.correctMeaning){ btn.classList.add('correct'); quizScore++; }
+        else{
+          btn.classList.add('wrong');
+          const correctBtn = Array.from(document.querySelectorAll('.quiz-option')).find(b=> b.textContent === q.correctMeaning);
+          correctBtn?.classList.add('correct');
+        }
+        setTimeout(()=>{ quizIndex++; renderQuestion(); }, 1100);
+      });
+      optsEl.appendChild(btn);
+    });
+    content.querySelector('#quizOptions').replaceWith(optsEl);
+    optsEl.id = 'quizOptions';
+  }
+
+  function renderResult(){
+    const best = parseInt(localStorage.getItem('asma-quiz-best-score') || '0', 10);
+    if(quizScore > best) localStorage.setItem('asma-quiz-best-score', String(quizScore));
+    content.innerHTML = `
+      <div class="quiz-question">🎉 خلصت الاختبار!</div>
+      <div class="quiz-score">${quizScore} / ${quizQuestions.length}</div>
+      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+        <button class="btn primary" id="quizRetryBtn">🔄 اختبار جديد</button>
+        <button class="btn small" id="quizCloseBtn">✖ إغلاق</button>
+      </div>`;
+    $('quizRetryBtn')?.addEventListener('click', startQuiz);
+    $('quizCloseBtn')?.addEventListener('click', ()=> modal.classList.add('hidden'));
+  }
+
+  function startQuiz(){
+    quizQuestions = buildQuestions();
+    quizIndex = 0; quizScore = 0;
+    modal.classList.remove('hidden');
+    renderQuestion();
+  }
+
+  $('startQuizBtn')?.addEventListener('click', startQuiz);
+  modal?.addEventListener('click', (e)=>{ if(e.target === modal) modal.classList.add('hidden'); });
+}, 'اختبار الأسماء الحسنى');

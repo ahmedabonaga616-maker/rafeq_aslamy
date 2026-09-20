@@ -265,6 +265,7 @@ async function fetchTimingsByCity(city){
 }
 function renderTimes(){
   if(!currentTimings) return;
+  safe(checkIfPrayerTimeNow, 'تنبيه وقت الصلاة الحالي');
   safe(()=>{
     $('t-fajr').textContent = to12h(currentTimings.Fajr);
     $('t-sunrise').textContent = to12h(currentTimings.Sunrise);
@@ -362,12 +363,13 @@ function updateCountdown(){
   if(!currentTimings) return;
   const order = ['Fajr','Dhuhr','Asr','Maghrib','Isha'];
   const now = new Date();
-  let next = null, nextKey = null;
-  for(const key of order){
+  let next = null, nextKey = null, prevKey = null;
+  for(let i=0;i<order.length;i++){
+    const key = order[i];
     const t = timeStrToDate(currentTimings[key]);
-    if(t > now){ next = t; nextKey = key; break; }
+    if(t > now){ next = t; nextKey = key; prevKey = order[i-1] || null; break; }
   }
-  if(!next){ next = timeStrToDate(currentTimings['Fajr']); next.setDate(next.getDate()+1); nextKey = 'Fajr'; }
+  if(!next){ next = timeStrToDate(currentTimings['Fajr']); next.setDate(next.getDate()+1); nextKey = 'Fajr'; prevKey = 'Isha'; }
 
   const diffSec = Math.floor((next - now)/1000);
   const hh = String(Math.floor(diffSec/3600)).padStart(2,'0');
@@ -377,6 +379,19 @@ function updateCountdown(){
   $('nextPrayerName').textContent = PRAYER_NAMES_AR[nextKey];
   $('countdownDisplay').textContent = `${hh}:${mm}:${ss}`;
   document.title = `⏳ ${PRAYER_NAMES_AR[nextKey]} بعد ${hh}:${mm}:${ss}`;
+
+  safe(()=>{
+    const ringFg = $('countdownRingFg');
+    if(ringFg){
+      let prev = prevKey ? timeStrToDate(currentTimings[prevKey]) : null;
+      if(prevKey === 'Isha' && next.getDate() !== now.getDate() && prev && prev > now) prev.setDate(prev.getDate()-1);
+      const totalSec = prev ? (next - prev)/1000 : 6*3600;
+      const elapsedSec = Math.max(0, totalSec - diffSec);
+      const CIRCUMFERENCE = 327;
+      const fraction = Math.min(1, Math.max(0, elapsedSec/totalSec));
+      ringFg.style.strokeDashoffset = String(CIRCUMFERENCE * fraction);
+    }
+  }, 'العداد الدائري');
 
   document.querySelectorAll('.time-cell').forEach(c=>c.classList.remove('active'));
   const idMap = {Fajr:'t-fajr', Dhuhr:'t-dhuhr', Asr:'t-asr', Maghrib:'t-maghrib', Isha:'t-isha'};
@@ -400,11 +415,34 @@ function updateCountdown(){
     }
   }
   if(diffSec === 0){
-    const audioAdhan = $('audioAdhan');
-    try{ audioAdhan.currentTime = 0; audioAdhan.play().catch(()=>{}); }catch(e){}
+    playChosenAthanSound();
     showToast(`🕌 حان الآن موعد صلاة ${PRAYER_NAMES_AR[nextKey]}`, 8000);
     notifyUser('حان وقت الصلاة', `حان الآن موعد صلاة ${PRAYER_NAMES_AR[nextKey]}`);
   }
+}
+function playChosenAthanSound(){
+  const choice = localStorage.getItem('site-athan-sound') || 'azan';
+  if(choice === 'silent') return;
+  if(choice === 'azan'){
+    const audioAdhan = $('audioAdhan');
+    try{ audioAdhan.currentTime = 0; audioAdhan.play().catch(()=>{}); }catch(e){}
+    return;
+  }
+  // نغمة مولّدة (chime1/chime2) بدل الأذان الكامل، لمن يفضّل تنبيه أخف
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = ctx.currentTime;
+    const freqs = choice === 'chime1' ? [660, 880, 990] : [523.25, 440, 523.25];
+    freqs.forEach((freq,i)=>{
+      const osc = ctx.createOscillator(), gain = ctx.createGain();
+      osc.type = 'sine'; osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, now+i*0.35);
+      gain.gain.linearRampToValueAtTime(0.2, now+i*0.35+0.03);
+      gain.gain.exponentialRampToValueAtTime(0.001, now+i*0.35+0.8);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(now+i*0.35); osc.stop(now+i*0.35+0.85);
+    });
+  }catch(e){}
 }
 setInterval(()=>{ if(currentTimings) safe(updateCountdown, 'تحديث العداد'); }, 1000);
 
@@ -532,7 +570,7 @@ async function fetchWeekly(){
           t: { Fajr: to12h(t.Fajr), Dhuhr: to12h(t.Dhuhr), Asr: to12h(t.Asr), Maghrib: to12h(t.Maghrib), Isha: to12h(t.Isha) }});
       }
     }
-    tbody.innerHTML = rows.map(r => `<tr><td>${r.day}</td><td>${r.t.Fajr}</td><td>${r.t.Dhuhr}</td><td>${r.t.Asr}</td><td>${r.t.Maghrib}</td><td>${r.t.Isha}</td></tr>`).join('');
+    tbody.innerHTML = rows.map(r => `<tr><td>${r.day}</td><td class="col-fajr">${r.t.Fajr}</td><td class="col-dhuhr">${r.t.Dhuhr}</td><td class="col-asr">${r.t.Asr}</td><td class="col-maghrib">${r.t.Maghrib}</td><td class="col-isha">${r.t.Isha}</td></tr>`).join('');
     weeklyTableWrap.dataset.loaded = '1';
   }catch(e){ tbody.innerHTML = '<tr><td colspan="6">تعذر تحميل جدول الأسبوع</td></tr>'; }
 }
@@ -620,7 +658,107 @@ safe(()=>{
   if('serviceWorker' in navigator){
     window.addEventListener('load', ()=>{ navigator.serviceWorker.register('sw.js').catch(()=>{}); });
   }
+
+  /* ---------------- تثبيت التطبيق (PWA) كتجربة حقيقية، مش بس أيقونة خفية في المتصفح ---------------- */
+  safe(()=>{
+    const installBtn = $('installAppBtn');
+    if(!installBtn) return;
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e)=>{
+      e.preventDefault();
+      deferredPrompt = e;
+      if(localStorage.getItem('pwa-installed') !== '1') installBtn.classList.remove('hidden');
+    });
+    installBtn.addEventListener('click', async ()=>{
+      if(!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if(outcome === 'accepted'){ showToast('🎉 جاري تثبيت التطبيق على جهازك'); localStorage.setItem('pwa-installed','1'); }
+      deferredPrompt = null;
+      installBtn.classList.add('hidden');
+    });
+    window.addEventListener('appinstalled', ()=>{
+      localStorage.setItem('pwa-installed', '1');
+      installBtn.classList.add('hidden');
+    });
+  }, 'زرار تثبيت التطبيق');
 }, 'PWA');
+
+/* ---------------- تنبيه لطيف لو الوقت الحالي هو نفسه وقت صلاة ---------------- */
+function checkIfPrayerTimeNow(){
+  if(!currentTimings || checkIfPrayerTimeNow._shown) return;
+  const names = { Fajr:'الفجر', Dhuhr:'الظهر', Asr:'العصر', Maghrib:'المغرب', Isha:'العشاء' };
+  const now = new Date();
+  const nowMinutes = now.getHours()*60 + now.getMinutes();
+  Object.keys(names).forEach(key=>{
+    const t = currentTimings[key];
+    if(!t) return;
+    const [h,m] = t.split(':').map(Number);
+    const diff = Math.abs(nowMinutes - (h*60+m));
+    if(diff <= 2){
+      showToast(`🕌 حان الآن وقت صلاة ${names[key]}، تقبل الله منك`, 6000);
+      checkIfPrayerTimeNow._shown = true;
+    }
+  });
+}
+
+/* ---------------- رسالة وداع لطيفة عند عدم التفاعل لفترة (مرة واحدة بس في الجلسة) ---------------- */
+safe(()=>{
+  let idleTimer = null;
+  const IDLE_MS = 3 * 60 * 1000;
+  function resetIdleTimer(){
+    if(sessionStorage.getItem('idle-goodbye-shown')) return;
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(()=>{
+      showToast('في أمان الله 🤍 لو محتاج حاجة، إحنا هنا', 5000);
+      sessionStorage.setItem('idle-goodbye-shown', '1');
+    }, IDLE_MS);
+  }
+  ['mousemove','keydown','touchstart','scroll'].forEach(ev=> document.addEventListener(ev, resetIdleTimer, {passive:true}));
+  resetIdleTimer();
+}, 'رسالة وداع لطيفة');
+
+/* ---------------- شارة "جديد" على الميزات المضافة حديثًا ---------------- */
+safe(()=>{
+  const NEW_PAGES = ['quran.html','progress.html','worksheet.html'];
+  document.querySelectorAll('.nav-card').forEach(card=>{
+    const href = card.getAttribute('href');
+    if(!NEW_PAGES.includes(href)) return;
+    const seenKey = 'seen-nav-' + href;
+    if(!localStorage.getItem(seenKey)){
+      const badge = document.createElement('span');
+      badge.className = 'new-badge';
+      badge.textContent = 'جديد';
+      card.appendChild(badge);
+      card.addEventListener('click', ()=> localStorage.setItem(seenKey, '1'));
+    }
+  });
+}, 'شارة جديد');
+
+/* ---------------- رسالة "أهلًا بعودتك" لو غاب 3 أيام أو أكتر ---------------- */
+safe(()=>{
+  const LAST_VISIT_KEY = 'last-visit-ts';
+  const last = parseInt(localStorage.getItem(LAST_VISIT_KEY) || '0', 10);
+  const now = Date.now();
+  const daysAway = Math.floor((now - last) / (1000*60*60*24));
+  if(last && daysAway >= 3){
+    showToast(`🤍 أهلًا بعودتك بعد غياب ${daysAway} يوم، اشتقنالك!`, 5000);
+  }
+  localStorage.setItem(LAST_VISIT_KEY, String(now));
+}, 'رسالة أهلًا بعودتك');
+
+/* ---------------- عيد ميلاد الموقع (سنويًا) ---------------- */
+safe(()=>{
+  const LAUNCH_MONTH = 9, LAUNCH_DAY = 1; // تاريخ الإطلاق التقريبي — عدّله لو حابب
+  const today = new Date();
+  if(today.getMonth()+1 === LAUNCH_MONTH && today.getDate() === LAUNCH_DAY){
+    const shownKey = 'birthday-shown-' + today.getFullYear();
+    if(!localStorage.getItem(shownKey)){
+      showToast('🎉 الموقع بقاله سنة! شكرًا إنك جزء من الرحلة دي 🤍', 6000);
+      localStorage.setItem(shownKey, '1');
+    }
+  }
+}, 'عيد ميلاد الموقع');
 
 /* ---------------- Analytics بسيط ---------------- */
 safe(()=>{

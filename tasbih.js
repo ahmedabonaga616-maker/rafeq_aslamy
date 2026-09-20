@@ -100,6 +100,7 @@ function renderCount(){
     $('targetDisplay').textContent = TOTAL;
     $('targetDisplayHand').textContent = TOTAL;
   }, 'عرض العداد');
+  if(window.updateBeadScene) safe(window.updateBeadScene, 'عرض السبحة 3D');
 }
 
 /* ---------------- اختيار الهدف (33 / 99 / 100 / 1000 / مخصوص) ---------------- */
@@ -370,3 +371,61 @@ safe(()=>{
 }, '20 تصميم لسبحة اليد');
 
 renderCount();
+
+/* ===================================================================
+   السبحة ثلاثية الأبعاد (CSS 3D) — وضع تفاعلي جديد
+=================================================================== */
+safe(()=>{
+  const mode3dBtn = $('mode3dBtn');
+  const view3d = $('view3d');
+  const modernView = $('modernView'), handView = $('handView');
+  const modernModeBtn = $('modernModeBtn'), handModeBtn = $('handModeBtn');
+
+  mode3dBtn.addEventListener('click', ()=>{
+    playClick();
+    [modernModeBtn, handModeBtn, mode3dBtn].forEach(b=> b.classList.remove('active'));
+    mode3dBtn.classList.add('active');
+    [modernView, handView].forEach(v=> v.classList.add('hidden'));
+    view3d.classList.remove('hidden');
+    buildBeadScene();
+  });
+  modernModeBtn.addEventListener('click', ()=> view3d.classList.add('hidden'));
+  handModeBtn.addEventListener('click', ()=> view3d.classList.add('hidden'));
+
+  const BEAD_RING_COUNT = 33;
+  function buildBeadScene(){
+    const scene = $('beadScene');
+    if(scene.dataset.built){ updateBeadScene(); return; }
+    scene.dataset.built = '1';
+    let html = '';
+    for(let i=0;i<BEAD_RING_COUNT;i++){
+      const angle = (360 / BEAD_RING_COUNT) * i;
+      const radius = 95;
+      html += `<div class="bead" data-idx="${i}" style="transform: rotate(${angle}deg) translate(${radius}px) rotate(${-angle}deg);"></div>`;
+    }
+    html += `<div class="bead main-bead" id="mainBead" title="دوس هنا للتسبيح"></div>`;
+    scene.innerHTML = html;
+    $('mainBead').addEventListener('click', ()=>{
+      tryIncrement($('mainBead'));
+      $('mainBead').classList.remove('bead-pulse');
+      void $('mainBead').offsetWidth;
+      $('mainBead').classList.add('bead-pulse');
+      scene.style.transform = `rotate(${(360/BEAD_RING_COUNT) * count}deg)`;
+    });
+    updateBeadScene();
+  }
+  window.updateBeadScene = function(){
+    safe(()=>{
+      $('count3d').textContent = count;
+      $('target3d').textContent = TOTAL;
+      $('total3d').textContent = totalAllTime;
+      const dhikrText = $('dhikrDisplayModern') ? $('dhikrDisplayModern').textContent : '';
+      $('dhikrDisplay3d').textContent = dhikrText;
+      document.querySelectorAll('#beadScene .bead:not(.main-bead)').forEach((el,i)=>{
+        el.classList.toggle('passed', i < (count % BEAD_RING_COUNT));
+      });
+    }, 'تحديث السبحة 3D');
+  };
+  $('undo3dBtn')?.addEventListener('click', ()=>{ playClick(); undoLast(); });
+  $('reset3dBtn')?.addEventListener('click', ()=>{ playClick(); count = 0; history = []; renderCount(); });
+}, 'وضع السبحة 3D');

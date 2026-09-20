@@ -1,0 +1,54 @@
+/* ===================================================================
+   tokens.css — نظام Design Tokens المركزي للموقع
+   كل الألوان والخطوط والمسافات بتتعرّف هنا مرة واحدة بس، وأي ملف CSS
+   تاني في الموقع (style.css، quran.css، ...) بياخد منها عن طريق var().
+   لو عايز تغيّر شكل الموقع كله، غيّر هنا بس.
+=================================================================== */
+:root{
+  /* -------- الوضع الليلي (افتراضي) -------- */
+  --bg-1:#0a1122;
+  --bg-2:#101b33;
+  --bg-gradient: radial-gradient(1200px 600px at 80% -10%, #16233f 0%, transparent 60%),
+                 linear-gradient(180deg, #0a1122 0%, #0d1730 100%);
+  --surface: #121f3b;
+  --surface-2: #16274a;
+  --border: rgba(201,162,75,.25);
+  --text: #f1ecdd;
+  --text-dim: #a9b3c9;
+  --gold: #c9a24b;
+  --gold-bright: #e6c877;
+  --green: #2e7d5b;
+  --green-bright:#3fa578;
+  --danger:#c0524a;
+  --star-color: #ffd24d;   /* لون مميز مختلف عن أزرار الموقع العادية، مخصص لكل نجوم/زراير المفضلة */
+  --star-color-hover: #ffdf80;
+
+  /* -------- مسافات وأشكال -------- */
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+  --radius: 18px;
+  --radius-sm: 12px;
+  --radius-pill: 30px;
+
+  /* -------- خطوط -------- */
+  --font-display: 'Amiri', serif;
+  --font-body: 'Tajawal', sans-serif;
+}
+
+[data-theme="light"]{
+  --bg-1: #f3f4f6;
+  --bg-2: #e5e7eb;
+  --bg-gradient: none;
+  --surface: #ffffff;
+  --surface-2: #f9fafb;
+  --text: #1f2937;
+  --text-dim: #6b7280;
+  --green: #006c35;
+  --green-bright: #009e60;
+  --gold: #facc15;
+  --gold-bright: #fbbf24;
+  --border: #e5e7eb;
+  --danger: #ef4444;
+  --star-color: #f59e0b;
+  --star-color-hover: #fbbf24;
+  --shadow: 0 5px 15px rgba(0,0,0,0.05);
+}

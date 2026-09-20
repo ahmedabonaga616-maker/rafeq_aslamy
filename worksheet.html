@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ورقة عمل للطباعة | الموقع الإسلامي الشامل</title>
+<meta name="description" content="اختر سورًا من القرآن أو فئة أذكار وأنشئ ورقة عمل منسّقة جاهزة للطباعة أو الحفظ كملف PDF.">
+<link rel="stylesheet" href="tokens.css?v=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;900&display=swap">
+<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="worksheet.css?v=1">
+<script src="settings-core.js?v=1"></script>
+<script src="azkar-data.js?v=1"></script>
+</head>
+<body data-theme="dark" class="page-fade-init">
+
+<header class="site-header no-print">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-emblem">🖨️</div>
+      <div><div class="brand-name">ورقة عمل للطباعة</div></div>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+      <span class="knob"><i id="themeIcon">🌙</i></span>
+    </button>
+  </div>
+</header>
+
+<div class="big-back-wrap no-print">
+  <a href="index.html" class="big-back-btn">🏠 العودة للرئيسية</a>
+</div>
+
+<main class="container worksheet-wrap">
+
+  <section class="ws-section no-print" id="builderPanel">
+    <div class="source-tabs">
+      <button class="btn primary" id="tabQuranBtn">📖 سور من القرآن</button>
+      <button class="btn" id="tabAzkarBtn">📿 أذكار</button>
+    </div>
+
+    <div id="quranPicker">
+      <input type="text" id="surahSearchWs" class="city-input" placeholder="🔍 دور على سورة بالاسم أو الرقم...">
+      <div class="pick-grid" id="surahPickGrid"></div>
+    </div>
+
+    <div id="azkarPicker" class="hidden">
+      <div class="pick-grid" id="azkarPickGrid"></div>
+    </div>
+
+    <div class="ws-actions">
+      <button class="btn primary" id="buildBtn">🧾 جهّز الورقة</button>
+      <span id="pickCount"></span>
+    </div>
+  </section>
+
+  <section class="worksheet-preview" id="worksheetPreview"></section>
+
+  <div class="ws-actions no-print" id="printActions" style="display:none;">
+    <button class="btn primary" id="printBtn">🖨️ طباعة / حفظ كـ PDF</button>
+    <button class="btn small" id="backToBuilderBtn">✏️ تعديل الاختيار</button>
+  </div>
+
+</main>
+
+<div class="toast no-print" id="toastBox"></div>
+
+<script src="worksheet.js?v=1"></script>
+<script src="transitions.js?v=1"></script>
+</body>
+</html>

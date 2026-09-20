@@ -17,6 +17,34 @@
 .continuous-label{ display:flex; align-items:center; gap:8px; font-size:.8rem; color:var(--text-dim); cursor:pointer; }
 .continuous-label input{ width:18px; height:18px; accent-color: var(--gold); }
 
+/* -------- نسبة إتمام قراءة المصحف -------- */
+.completion-percent-card{
+  background: var(--surface); border:1px solid var(--gold); border-radius: var(--radius);
+  padding: 14px 18px; margin-bottom:16px; text-align:center;
+}
+.cp-label{ font-size:.82rem; color: var(--text-dim); margin-bottom:8px; }
+.cp-bar-wrap{ height:10px; border-radius:6px; background: var(--surface-2); overflow:hidden; margin-bottom:6px; }
+.cp-bar{ height:100%; width:0%; background: linear-gradient(90deg, var(--green), var(--gold)); transition: width .6s ease; }
+.cp-text{ font-size:.78rem; color: var(--gold-bright); font-weight:700; }
+
+/* -------- تبويبات الفهرس (سور/أجزاء/أحزاب) -------- */
+.index-tabs{ display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
+
+/* -------- شبكة الأجزاء/الأحزاب -------- */
+.juz-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(0,130px)); gap:12px; }
+.juz-card{
+  background: var(--surface); border:1px solid var(--border); border-radius: var(--radius);
+  padding: 16px 10px; text-align:center; cursor:pointer;
+  transition: transform .25s cubic-bezier(.34,1.56,.64,1), border-color .25s ease, box-shadow .25s ease;
+}
+.juz-card:hover{ transform: translateY(-4px) scale(1.02); border-color: var(--gold); box-shadow: var(--shadow); }
+.juz-num{
+  width:36px; height:36px; margin:0 auto 8px; border-radius:50%; border:1.5px solid var(--gold);
+  display:flex; align-items:center; justify-content:center; font-weight:700; color: var(--gold-bright); font-size:.85rem;
+}
+.juz-title{ font-family: var(--font-display); font-size:1rem; color: var(--text); font-weight:700; }
+.juz-sub{ font-size:.7rem; color: var(--text-dim); margin-top:4px; }
+
 /* -------- شبكة السور -------- */
 .surah-grid{ display:grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap:12px; }
 .loading-box{ text-align:center; padding:40px 10px; color:var(--text-dim); grid-column: 1 / -1; }
@@ -31,7 +59,8 @@
   color: var(--text-dim); transition: transform .15s ease, color .15s ease;
 }
 .surah-fav-star:hover{ transform: scale(1.2); }
-.surah-fav-star.active{ color: var(--gold-bright); }
+.surah-fav-star.active{ color: var(--star-color); }
+.surah-fav-star.active:hover{ color: var(--star-color-hover); }
 .surah-card .num{
   width:38px; height:38px; flex:none; border-radius:50%; border:1.5px solid var(--gold);
   display:flex; align-items:center; justify-content:center; font-weight:700; color: var(--gold-bright); font-size:.85rem;
@@ -52,15 +81,54 @@
 .font-size-ctrl{ display:flex; gap:6px; }
 .font-size-ctrl .btn{ padding:6px 12px; font-family: var(--font-display); }
 
+/* -------- شريط علوي ثابت: اسم السورة + الجزء + رقم الصفحة (زرار التسمية فوق) -------- */
+.mushaf-topbar{
+  position: sticky; top: 0; z-index: 30;
+  background: var(--surface); border:1px solid var(--gold); border-radius: var(--radius);
+  padding: 10px 16px; margin-bottom:14px;
+  display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  box-shadow: var(--shadow);
+}
+.mushaf-topbar-info{ display:none; }
+.topbar-page-label{ font-family: var(--font-display); font-size:1rem; color: var(--gold-bright); font-weight:700; }
+.mushaf-explain{
+  font-size:.78rem; color: var(--text-dim); line-height:1.9; text-align:center;
+  margin: -4px 0 16px; padding: 0 6px;
+}
+.mushaf-explain b{ color: var(--gold-bright); }
+.page-jump{ display:flex; gap:6px; }
+.page-jump input{
+  width:100px; padding:7px 10px; border-radius:10px; border:1px solid var(--border);
+  background: var(--surface-2); color: var(--text); font-family:inherit; text-align:center;
+}
+.reciter-note{ font-size:.72rem; color: var(--text-dim); flex-basis:100%; text-align:center; }
+
 /* -------- شريط إجراء الآية (نسخ) -------- */
 .ayah-action-bar{
-  position: sticky; top: 70px; z-index: 20;
+  position: sticky; top: 74px; z-index: 20;
   display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap;
   background: var(--surface); border:1px solid var(--gold); border-radius: 30px;
   padding: 8px 18px; margin-bottom:10px; width:fit-content; margin-inline:auto;
   box-shadow: var(--shadow); font-size:.85rem; font-weight:700; color: var(--gold-bright);
 }
 .ayah-hint{ text-align:center; font-size:.75rem; color: var(--text-dim); margin-top:10px; }
+
+/* -------- وضع التسميع -------- */
+.tasmee-mode .ayah{
+  filter: blur(7px);
+  border-radius: 6px;
+  transition: filter .2s ease;
+}
+.tasmee-mode .ayah.revealed{ filter: none; background: rgba(201,162,75,.14); }
+.tasmee-mode .ayah.tasmee-correct{ background: rgba(63,165,120,.22); }
+.tasmee-mode .ayah:active{ filter: blur(3px); }
+
+.tasmee-listen-bar{
+  display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;
+  margin: 10px 0; padding: 10px 14px; border-radius: var(--radius);
+  background: var(--surface); border: 1px solid var(--border);
+}
+.tasmee-status{ font-size:.8rem; color: var(--text-dim); }
 
 /* -------- تلميح ميزة المفضلة -------- */
 .fav-hint{
@@ -74,6 +142,42 @@
   background:none; border:none; color: var(--text-dim); font-size:.9rem; cursor:pointer; padding:2px 6px;
 }
 .fav-hint.hidden{ display:none; }
+
+/* -------- بانر إتمام قراءة السور (شهادة الختم) -------- */
+.completion-banner{
+  display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;
+  background: color-mix(in srgb, var(--gold) 18%, var(--surface));
+  border:1px solid var(--gold); border-radius: var(--radius);
+  padding: 14px 18px; margin-bottom:14px; font-size:.9rem; font-weight:700; text-align:center;
+}
+.completion-banner.hidden{ display:none; }
+
+/* -------- لون مميز لأزرار التحميل -------- */
+.btn-download{ background: color-mix(in srgb, var(--green) 22%, var(--surface-2)); border-color: var(--green); }
+.btn-download:hover{ background: var(--green); color:#fff; border-color: var(--green); }
+
+/* -------- تنزيل نص المصحف أوفلاين -------- */
+.offline-progress{ font-size:.78rem; color: var(--gold-bright); text-align:center; margin-top:8px; min-height:1.2em; }
+
+/* -------- مودال إحصائيات السور -------- */
+.stats-modal{ position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:400; display:flex; align-items:center; justify-content:center; padding:16px; }
+.stats-modal.hidden{ display:none; }
+.stats-modal-content{
+  background: var(--surface); border:1px solid var(--gold); border-radius: var(--radius);
+  padding: 24px; max-width: 95vw; max-height:90vh; overflow:auto; position:relative; text-align:center;
+}
+.stats-modal-content h2{ font-family: var(--font-display); color: var(--gold-bright); margin-bottom:14px; }
+.stats-modal-close{ position:absolute; top:10px; left:14px; background:none; border:none; color:var(--text-dim); font-size:1.1rem; }
+#surahStatsCanvas{ max-width:100%; }
+
+/* -------- تسجيل وقارن (تقريبي) -------- */
+.record-panel{
+  background: var(--surface); border:1px solid var(--gold); border-radius: var(--radius);
+  padding: 16px; margin-bottom:14px; text-align:center; font-size:.85rem;
+}
+.record-panel.hidden{ display:none; }
+.record-panel .record-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:10px; }
+.record-panel .record-result{ margin-top:10px; font-weight:700; color: var(--gold-bright); }
 
 /* -------- شريط أدوات صفحة القراءة -------- */
 .reader-toolbar{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
@@ -107,6 +211,7 @@
 }
 .reciter-item:hover{ background: color-mix(in srgb, var(--gold) 16%, var(--surface-2)); }
 .reciter-item.active{ background: var(--gold); color:#171203; font-weight:700; }
+
 .reciter-empty{ text-align:center; padding:14px; color: var(--text-dim); font-size:.82rem; }
 .player-controls{ display:flex; align-items:center; gap:10px; flex:1; min-width:220px; }
 .round-btn{
@@ -133,6 +238,25 @@
   position: relative;
 }
 [data-theme="light"] .mushaf-page{ background: linear-gradient(180deg, #fffaf0, #fbf0da); }
+
+/* -------- رأس الصفحة داخل الورقة: الجزء يمين/شمال + اسم السورة (زي المصحف المطبوع) -------- */
+.mushaf-page-header{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  margin-bottom:20px; padding-bottom:12px; border-bottom: 1.5px solid #c9a24b;
+  font-family: var(--font-display); font-size:1.05rem; color:#7a5a18; font-weight:700;
+}
+.mph-juz{
+  display:inline-flex; align-items:center; gap:4px; background: rgba(201,162,75,.15);
+  border:1px solid #c9a24b; border-radius:10px; padding:4px 12px; font-size:.85rem;
+}
+
+/* -------- تذييل الصفحة: علامة الحزب وربعه، زي المصحف المطبوع -------- */
+.mushaf-page-footer{ text-align:center; margin-top:22px; }
+.mpf-pill{
+  display:inline-block; border:1.5px solid #c9a24b; border-radius:20px; padding:6px 18px;
+  font-family: var(--font-body); font-size:.8rem; font-weight:700; color:#7a5a18;
+  background: rgba(201,162,75,.12);
+}
 
 .surah-frame{
   text-align:center; margin-bottom: 22px; padding: 14px 10px;

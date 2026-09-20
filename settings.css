@@ -75,6 +75,11 @@
 .custom-color-row input[type="color"]::-webkit-color-swatch-wrapper{ padding:0; border-radius:50%; }
 .custom-color-row input[type="color"]::-webkit-color-swatch{ border:none; border-radius:50%; }
 
+.intensity-row{
+  display:flex; align-items:center; gap:12px; margin-top:10px; font-size:.8rem; color: var(--text-dim);
+}
+.intensity-row input[type="range"]{ flex:1; accent-color: var(--gold); }
+
 .settings-actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:6px; }
 
 /* -------- شريط تأكيد المعاينة الحية -------- */
@@ -88,3 +93,13 @@
 }
 .preview-confirm-bar.hidden{ display:none; }
 .preview-confirm-actions{ display:flex; gap:8px; flex-wrap:wrap; }
+
+/* -------- اختيار صوت الأذان -------- */
+.athan-options{ display:flex; flex-direction:column; gap:10px; }
+.athan-option{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:12px 14px; border-radius:12px; background: var(--surface-2); border:1px solid var(--border);
+}
+.athan-option-label{ display:flex; align-items:center; gap:8px; font-size:.88rem; }
+.athan-option-label input{ width:18px; height:18px; accent-color: var(--gold); }
+.athan-option.selected{ border-color: var(--gold); background: color-mix(in srgb, var(--gold) 14%, var(--surface-2)); }

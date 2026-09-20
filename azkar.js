@@ -81,6 +81,22 @@ function renderStreak(){
   el.textContent = '🔥 متتالية: ' + streak + ' يوم';
 }
 
+function playCompletionChime(){
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = ctx.currentTime;
+    [523.25, 659.25, 783.99].forEach((freq, i)=>{
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine'; osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, now + i*0.12);
+      gain.gain.linearRampToValueAtTime(0.18, now + i*0.12 + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + i*0.12 + 0.5);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(now + i*0.12); osc.stop(now + i*0.12 + 0.55);
+    });
+  }catch(e){}
+}
 function markCategoryCompleted(catId){
   const log = getCompletedLog();
   const today = new Date().toISOString().slice(0,10);
@@ -88,6 +104,7 @@ function markCategoryCompleted(catId){
   log[catId] = { count: prev.count + 1, lastDate: today };
   localStorage.setItem(COMPLETED_KEY, JSON.stringify(log));
   renderStreak();
+  playCompletionChime();
 }
 
 /* ---------------- قسم عشوائي ---------------- */
@@ -247,6 +264,31 @@ safe(() => {
            loadCurrentDhikr();
        }
    }
+
+   /* السحب (Swipe) للتنقل بين الأذكار — إضافة جنب اللمس العادي (العد بالضغط)، مش بديل عنه */
+   safe(()=>{
+     const detailView = document.getElementById('dhkarDetailView');
+     if(!detailView) return;
+     let sx=0, sy=0, isSwipe=false;
+     detailView.addEventListener('touchstart', (e)=>{
+       if(e.touches.length!==1) return;
+       sx = e.touches[0].clientX; sy = e.touches[0].clientY; isSwipe=false;
+     }, {passive:true});
+     detailView.addEventListener('touchmove', (e)=>{
+       if(e.touches.length!==1) return;
+       const dx = e.touches[0].clientX - sx, dy = e.touches[0].clientY - sy;
+       if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)*1.5) isSwipe = true;
+     }, {passive:true});
+     detailView.addEventListener('touchend', (e)=>{
+       if(!isSwipe) return;
+       const dx = e.changedTouches[0].clientX - sx;
+       if(dx < -60) nextDhikrStep();
+       else if(dx > 60) prevDhikrStep();
+       setTimeout(()=> isSwipe=false, 300);
+     }, {passive:true});
+     // نمنع تنفيذ handleDhikrTouch (العد بالضغط) لو كانت اللمسة سحب فعلي
+     detailView.addEventListener('click', (e)=>{ if(isSwipe) e.stopImmediatePropagation(); }, true);
+   }, 'السحب بين الأذكار');
    // 1. تعريف العناصر
 const toggleDuaBtn = document.getElementById('toggleDuaBtn');
 const duaSection = document.getElementById('duaSection');

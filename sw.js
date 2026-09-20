@@ -1,5 +1,5 @@
-const CACHE_NAME = 'islamic-site-v5';
-const ASSETS = ['./', './index.html', './style.css', './script.js', './quran.html', './quran.css', './quran.js'];
+const CACHE_NAME = 'islamic-site-v11';
+const ASSETS = ['./', './index.html', './tokens.css', './style.css', './script.js', './quran.html', './quran.css', './quran.js', './certificate.js', './progress.html', './progress.css', './progress.js', './stats.js', './worksheet.html', './worksheet.css', './worksheet.js'];
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)).catch(()=>{}));
   self.skipWaiting();

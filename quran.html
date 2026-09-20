@@ -4,17 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>المصحف الشريف | الموقع الإسلامي الشامل</title>
-<meta name="description" content="المصحف الشريف كاملًا بالرسم العثماني، مع مجموعة واسعة من القراء وتحميل موثوق للصوتيات.">
+<meta name="description" content="المصحف الشريف كاملًا بالرسم العثماني، يتقلب صفحات زي المصحف الحقيقي، مع فهرس بالسور والأجزاء والأحزاب.">
+<link rel="stylesheet" href="tokens.css?v=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700;900&display=swap">
 <link rel="stylesheet" href="style.css?v=5">
-<link rel="stylesheet" href="quran.css?v=2">
+<link rel="stylesheet" href="quran.css?v=3">
 <script src="settings-core.js?v=1"></script>
+<script src="certificate.js?v=1"></script>
 </head>
-<body data-theme="dark">
+<body data-theme="dark" class="page-fade-init">
 
 <header class="site-header">
   <div class="header-inner">
     <div class="brand">
-      <div class="brand-emblem">☾</div>
+      <div class="brand-emblem">📖</div>
       <div><div class="brand-name">المصحف الشريف</div></div>
     </div>
     <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
@@ -30,14 +35,27 @@
 <main class="container quran-wrap">
 
   <div class="trust-note">
-    ✅ نص المصحف هنا هو <b>الرسم العثماني المعتمد</b> المُستخدم في منصة Quran.com، وهو نفس النص الذي راجعه مجمع الملك فهد لطباعة المصحف الشريف بالمدينة المنورة. أما الصوتيات فمصدرها شبكة قراء mp3quran.net الموثوقة، وروابط تحميلها ثابتة ومباشرة. لو حابب نسخة PDF رسمية مصوَّرة من المصحف، اضغط
+    ✅ نص المصحف هنا هو <b>الرسم العثماني المعتمد</b> (مشروع Tanzil العالمي، مطابق لمصحف مجمع الملك فهد)، وترقيم الصفحات مطابق للمصحف المطبوع القياسي (604 صفحة). الصوتيات من شبكة قراء mp3quran.net الموثوقة. لو حابب نسخة PDF رسمية مصوَّرة، اضغط
     <a href="https://qurancomplex.gov.sa" target="_blank" rel="noopener">هنا لموقع المجمع الرسمي</a>.
   </div>
 
-  <!-- شاشة قائمة السور -->
-  <section id="surahListScreen">
+  <!-- شاشة الفهرس -->
+  <section id="indexScreen">
     <div class="resume-banner hidden" id="resumeBanner"></div>
-    <div class="quran-toolbar">
+
+    <div class="completion-percent-card">
+      <div class="cp-label">نسبة ما قرأته من المصحف</div>
+      <div class="cp-bar-wrap"><div class="cp-bar" id="completionPercentBar"></div></div>
+      <div class="cp-text" id="completionPercentText">0%</div>
+    </div>
+
+    <div class="index-tabs">
+      <button class="btn primary" id="tabSurahBtn">📖 السور</button>
+      <button class="btn" id="tabJuzBtn">📑 الأجزاء</button>
+      <button class="btn" id="tabHizbBtn">🔖 الأحزاب</button>
+    </div>
+
+    <div class="quran-toolbar" id="surahToolbar">
       <input type="text" id="surahSearch" class="city-input" placeholder="🔍 ابحث عن سورة بالاسم أو رقمها...">
       <label class="continuous-label">
         <input type="checkbox" id="continueAllToggle">
@@ -45,21 +63,38 @@
       </label>
       <button class="btn small" id="favSurahsFilterBtn">💛 السور المفضّلة</button>
       <a href="favorites.html" class="btn small">⭐ الآيات المفضلة</a>
+      <button class="btn small" id="offlineDownloadBtn">📥 تحميل نص المصحف للقراءة بدون نت</button>
+      <button class="btn small" id="statsChartBtn">📊 إحصائيات السور</button>
     </div>
+    <div class="offline-progress" id="offlineProgress"></div>
+
     <div class="surah-grid" id="surahGrid">
       <div class="loading-box">⏳ جاري تحميل قائمة السور...</div>
     </div>
+    <div class="juz-grid hidden" id="juzGrid"></div>
+    <div class="juz-grid hidden" id="hizbGrid"></div>
   </section>
 
-  <!-- شاشة قراءة السورة -->
+  <!-- شاشة القراءة (صفحات المصحف) -->
   <section id="readerScreen" class="hidden">
-    <div class="reader-toolbar">
-      <button class="btn small" id="backToListBtn">◀ كل السور</button>
-      <div class="reader-nav">
-        <button class="btn small" id="prevSurahBtn">السورة السابقة ▶</button>
-        <button class="btn small" id="nextSurahBtn">◀ السورة التالية</button>
+    <div class="mushaf-topbar" id="mushafTopbar">
+      <button class="btn small" id="backToListBtn">◀ الفهرس</button>
+      <span class="topbar-page-label">صفحة <b id="topbarPage">-</b></span>
+      <div class="page-jump">
+        <input type="number" id="pageJumpInput" min="1" max="604" placeholder="رقم الصفحة">
+        <button class="btn small" id="pageJumpBtn">اذهب</button>
       </div>
+    </div>
+    <p class="mushaf-explain">💡 زي المصحف المطبوع بالظبط: <b>الجزء</b> بيتكتب أعلى الصفحة لأنه بيقسّم القرآن لـ30 قسم متساوي تقريبًا (وردك اليومي)، و<b>الحزب وربعه</b> بيتكتبوا أسفل الصفحة لأن كل جزء فيه حزبين، وكل حزب مقسوم لـ4 أرباع — تقسيم تقليدي معروف من مئات السنين بيسهّل عليك تتابع وين وصلت بالظبط.</p>
+
+    <div class="reader-toolbar">
+      <div class="reader-nav">
+        <button class="btn small" id="prevPageBtn">الصفحة السابقة ▶</button>
+        <button class="btn small" id="nextPageBtn">◀ الصفحة التالية</button>
+      </div>
+      <button class="btn small" id="tasmeeToggleBtn">🎙️ وضع التسميع</button>
       <a href="favorites.html" class="btn small">⭐ المفضلة</a>
+      <a href="progress.html" class="btn small">🌳 رحلتي</a>
     </div>
 
     <div class="reciter-bar">
@@ -74,6 +109,8 @@
       </div>
       <button class="btn small hidden" id="recitersRetryBtn">🔄 إعادة تحميل القراء</button>
 
+      <button class="btn small" id="fullscreenBtn">⛶ ملء الشاشة</button>
+
       <div class="font-size-ctrl" title="حجم خط المصحف">
         <button class="btn small" id="fontDecBtn" aria-label="تصغير الخط">A-</button>
         <button class="btn small" id="fontIncBtn" aria-label="تكبير الخط">A+</button>
@@ -85,9 +122,10 @@
           <input type="range" id="seekBar" min="0" max="100" value="0" step="0.1">
           <div class="time-row"><span id="curTime">00:00</span><span id="durTime">00:00</span></div>
         </div>
-        <button class="round-btn" id="downloadSurahBtn" title="تحميل صوت هذه السورة">⬇️</button>
+        <button class="round-btn btn-download" id="downloadSurahBtn" title="تحميل صوت السورة الحالية">⬇️</button>
       </div>
-      <button class="btn small" id="downloadAllBtn">⬇️ تحميل المصحف كامل بصوت هذا الشيخ (114 ملف)</button>
+      <span class="reciter-note">🔊 الصوت بيشغّل السورة كاملة، وانت بتقلب الصفحات بإيدك</span>
+      <button class="btn small btn-download" id="downloadAllBtn">⬇️ تحميل المصحف كامل بصوت هذا الشيخ (114 ملف)</button>
       <span class="dl-progress" id="dlProgress"></span>
     </div>
 
@@ -100,20 +138,42 @@
       <span id="ayahActionLabel"></span>
       <button class="btn small primary" id="copyAyahBtn">📋 نسخ الآية</button>
       <button class="btn small" id="favAyahBtn">⭐ إضافة للمفضلة</button>
+      <button class="btn small" id="recordAyahBtn">🎙️ سجّل وقارن</button>
+    </div>
+    <div class="record-panel hidden" id="recordPanel"></div>
+
+    <div class="completion-banner hidden" id="completionBanner"></div>
+
+    <p class="ayah-hint hidden" id="tasmeeHint">
+      🎙️ في وضع التسميع بيتغطى نص الآيات، وانت بتسمّع من حفظك وتدوس على أي آية تكشفها وتتأكد منها.
+    </p>
+    <div class="tasmee-listen-bar hidden" id="tasmeeListenBar">
+      <button class="btn small primary" id="tasmeeListenBtn">🎤 ابدأ الاستماع لصوتي</button>
+      <span id="tasmeeListenStatus" class="tasmee-status"></span>
     </div>
 
     <div class="mushaf-page" id="mushafPage">
-      <div class="loading-box">⏳ جاري تحميل السورة...</div>
+      <div class="loading-box">⏳ جاري تحميل الصفحة...</div>
     </div>
-    <p class="ayah-hint">💡 اضغط على أي آية لتظليلها ونسخها</p>
+    <p class="ayah-hint">💡 اضغط على أي آية لتظليلها ونسخها · اسحب يمين أو شمال لتقليب الصفحة</p>
   </section>
 
 </main>
+
+<div class="stats-modal hidden" id="statsModal">
+  <div class="stats-modal-content">
+    <button class="stats-modal-close" id="statsModalClose">✖</button>
+    <h2>📊 إحصائيات السور</h2>
+    <canvas id="surahStatsCanvas" width="900" height="320"></canvas>
+    <p class="progress-note">كل نقطة سورة؛ اللون الأخضر = مكية، الذهبي = مدنية. المحور الرأسي عدد الآيات.</p>
+  </div>
+</div>
 
 <div class="toast" id="toastBox"></div>
 <audio id="audioClick" src="audio/click.mp3" preload="auto"></audio>
 <audio id="quranAudio" preload="none"></audio>
 
-<script src="quran.js?v=2"></script>
+<script src="quran.js?v=4"></script>
+<script src="transitions.js?v=1"></script>
 </body>
 </html>
